@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Map {
     private ArrayList<Player> playerList;
     private int difficulty, map_type;
+    private int[][] mapGrid;
 
     /**
      * Constructs a map with no players, difficulty 1(Easy) and Map type 1
@@ -12,7 +13,10 @@ public class Map {
 
     public Map(){
         this(new ArrayList<Player>(), 1, 1);
+        mapGrid = new int[5][5];
+
     }
+
 
     /**
      * Constructs a map with the given player arraylist, difficulty and map type

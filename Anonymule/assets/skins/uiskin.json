@@ -20,5 +20,8 @@
      },
      com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
       default: { font: normaltext, fontColor: black }
+     },
+     com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+       default: {  }
      }
  }

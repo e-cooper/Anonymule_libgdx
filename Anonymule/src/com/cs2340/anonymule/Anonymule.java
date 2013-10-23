@@ -8,6 +8,7 @@ public class Anonymule extends Game implements ApplicationListener{
 
     @Override
     public void create() {
+//        resize(1080, 1920);
         setScreen(new SplashScreen(this));
     }
 

@@ -25,7 +25,7 @@ public class MainMenuScreen implements Screen {
     private Anonymule anonymule;
 
 
-    private String [] difficulty = {"Easy", "Hard"};
+    private String[] difficulty;
     private String [] mapType = {"1", "2", "3"};
     private SelectBox selectBox;
     private TextButton continueButton;
@@ -38,6 +38,7 @@ public class MainMenuScreen implements Screen {
     private OrthographicCamera camera;
 
     public MainMenuScreen(Anonymule anonymule){
+        difficulty = new String[]{"easy", "hard"};
         this.anonymule = anonymule;
         batch = new SpriteBatch();
         stage = new Stage(480, 800, false);
@@ -46,6 +47,16 @@ public class MainMenuScreen implements Screen {
         background = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 480, 800);
+        continueButton.setPosition(480/2 - 70, 800/2);
+
+//        System.out.print(camera.position);
+//        selectBox = new SelectBox(difficulty, skin);
+//        selectBox = new SelectBox(difficulty, skin); //Keeps giving me null pointers man
+//        selectBox.setSelection(0);
+//        selectBox.addListener(new InputListener(){
+//
+//        });
+//        stage.addActor(selectBox);
 
         Gdx.input.setInputProcessor(stage);
 

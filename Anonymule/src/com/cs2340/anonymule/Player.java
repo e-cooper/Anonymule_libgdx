@@ -1,7 +1,8 @@
 package com.cs2340.anonymule;
 
 public class Player {
-    private String color, race, name;
+    private String color, name;
+    private int race;
     private static int player_count = 0;
 
     /**
@@ -9,7 +10,7 @@ public class Player {
      */
 
     public Player(){
-        this("red", "race1", "player" + (player_count+1));
+        this("red", 1, "player" + (player_count+1));
         player_count++;
     }
 
@@ -20,7 +21,7 @@ public class Player {
      * @param name Name of the player
      */
 
-    public Player(String color, String race, String name) {
+    public Player(String color, int race, String name) {
         this.color = color;
         this.race = race;
         this.name = name;
@@ -49,7 +50,7 @@ public class Player {
      * @return The race of the player
      */
 
-    public String getRace() {
+    public int getRace() {
         return race;
     }
 
@@ -58,7 +59,7 @@ public class Player {
      * @param race  The new race of the player
      */
 
-    public void setRace(String race) {
+    public void setRace(int race) {
         this.race = race;
     }
 
@@ -87,7 +88,7 @@ public class Player {
      * @param name The name of the player
      */
 
-    public void setAttributes(String color, String race, String name){
+    public void setAttributes(String color, int race, String name){
         setColor(color);
         setRace(race);
         setName(name);

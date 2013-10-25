@@ -6,6 +6,7 @@ public class Map {
     private ArrayList<Player> playerList;
     private int difficulty, map_type;
     private int[][] mapGrid;
+    public static int player_count;
 
     /**
      * Constructs a map with no players, difficulty 1(Easy) and Map type 1
@@ -47,6 +48,8 @@ public class Map {
 
     public void addPlayer(Player player){
         playerList.add(player);
+        player_count++;
+
     }
 
     /**

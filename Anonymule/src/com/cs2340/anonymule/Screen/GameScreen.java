@@ -15,11 +15,21 @@ public class GameScreen implements Screen {
     private Texture background;
     private Map map;
 
+    /**
+     * Initializes the main game screen
+     * @param anonymule The main game
+     */
+
     public GameScreen(Anonymule anonymule){
         this.anonymule = anonymule;
         batch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_mapbg.jpg"));
     }
+
+    /**
+     * Renders the background and game objects on the screen
+     * @param delta Time in seconds since the last render
+     */
 
     @Override
     public void render(float delta) {
@@ -30,36 +40,55 @@ public class GameScreen implements Screen {
         batch.begin();
         batch.draw(background, 0, 0);
         batch.end();
-        //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    /**
+     * Resizes the game everytime the game is not in paused state
+     * @param width The new width of the game
+     * @param height The new height of the game
+     */
 
     @Override
     public void resize(int width, int height) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    /**
+     * Called when the app makes this screen active
+     */
 
     @Override
     public void show() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    /**
+     * Called when the app makes another screen active
+     */
 
     @Override
     public void hide() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    /**
+     * Called before dispose. Also called on android when user presses the home button
+     */
 
     @Override
     public void pause() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    /**
+     * Only called on android when an app resumes from a paused state
+     */
 
     @Override
     public void resume() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    /**
+     * Cleans up any loaded assets
+     */
 
     @Override
     public void dispose() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

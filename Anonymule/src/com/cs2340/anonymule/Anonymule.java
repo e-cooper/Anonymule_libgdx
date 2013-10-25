@@ -6,13 +6,32 @@ import com.cs2340.anonymule.Screen.SplashScreen;
 
 public class Anonymule extends Game implements ApplicationListener{
 
+    private Map map;
+
+    /**
+     * Creates the main game class that initializes the map and shows a splash screen
+     */
+
     @Override
     public void create() {
-//        resize(1080, 1920);
+        map = new Map();
         setScreen(new SplashScreen(this));
     }
 
+    /**
+     * Cleans up any loaded assets
+     */
+
     public void dispose(){
         super.dispose();
+    }
+
+    /**
+     * Returns the map of the game
+     * @return the map
+     */
+
+    public Map getMap() {
+        return map;
     }
 }

@@ -5,13 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.cs2340.anonymule.Anonymule;
 
-/**
- * Created with IntelliJ IDEA.
- * User: inder
- * Date: 10/23/13
- * Time: 1:16 AM
- * To change this template use File | Settings | File Templates.
- */
+//Not using this for now
+
 public class MainMenuInputProcessor implements InputProcessor {
 
     Anonymule anonymule;

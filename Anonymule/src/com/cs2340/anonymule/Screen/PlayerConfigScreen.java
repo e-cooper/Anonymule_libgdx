@@ -57,7 +57,7 @@ public class PlayerConfigScreen implements Screen {
         playerRace.setPosition(120, 605);
         playerColor = new Label("Color", skin);
         playerColor.setPosition(120, 550);
-        player_number = new Label("Player " + current_player + 1, skin);
+        player_number = new Label("Player " + (current_player + 1), skin);
         player_number.setPosition(220, 760);
 
         raceSelectBox = new SelectBox(playerRaces, skin);
@@ -102,9 +102,9 @@ public class PlayerConfigScreen implements Screen {
 
     public void updateScreen(){
         Map map = anonymule.getMap();
-        current_player++;
-        Player temp = map.getPlayerList().get(current_player - 1);
+        Player temp = map.getPlayerList().get(current_player);
         String name = playerNameField.getText();
+        current_player++;
 
         // If no name is provided, use default name
         if(name.isEmpty()){

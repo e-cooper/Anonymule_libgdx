@@ -49,7 +49,7 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(Anonymule anonymule){
         difficulty = new String[]{"easy", "hard"};
-        mapType = new Integer[]{1, 2, 3};
+        mapType = new Integer[]{1, 2};
         players_count = new Integer[]{1, 2, 3, 4};
         this.anonymule = anonymule;
         batch = new SpriteBatch();
@@ -133,6 +133,7 @@ public class MainMenuScreen implements Screen {
 
         // Adds the selected number of players with default values to be accessed later
 
+        map.getPlayerList().clear();
         for(int i = 0; i < players; i++){
             map.addPlayer(new Player());
         }

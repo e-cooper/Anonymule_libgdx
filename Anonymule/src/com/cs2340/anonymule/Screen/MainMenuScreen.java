@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -85,7 +85,6 @@ public class MainMenuScreen implements Screen {
         continueButton.addListener(new InputListener() {
 
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                System.out.println("down");
                 return true;
             }
 
@@ -161,6 +160,8 @@ public class MainMenuScreen implements Screen {
         batch.begin();
         batch.draw(background, 0, 0);
         batch.end();
+
+
 
         // Draw the stage with all its actors
         batch.begin();

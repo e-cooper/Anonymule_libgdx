@@ -75,7 +75,6 @@ public class PlayerConfigScreen implements Screen {
         // Listen for clicks on the continue button
         continueButton.addListener(new InputListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                System.out.println("down");
                 return true;
             }
 

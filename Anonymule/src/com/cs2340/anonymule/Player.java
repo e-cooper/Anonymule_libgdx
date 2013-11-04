@@ -1,7 +1,10 @@
 package com.cs2340.anonymule;
 
 import com.badlogic.gdx.graphics.Color;
+import com.cs2340.anonymule.Tile.Tile;
+
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class Player {
     private String colorName, name;
@@ -10,6 +13,7 @@ public class Player {
     private int x, y, money;
     private int race;
     private static int player_count = 0;
+    private ArrayList<Tile> playerProperties = new ArrayList<Tile>();
 
     /**
      * Creates a place with color "red", race "race1" and default name "player1", "player2" etc
@@ -32,6 +36,8 @@ public class Player {
         this.race = race;
         this.name = name;
         this.color = color;
+        this.x = 343;
+        this.y = 454;
     }
 
     /**
@@ -139,6 +145,10 @@ public class Player {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public ArrayList<Tile> getPropertyList(){
+        return playerProperties;
     }
 
     public void printBro(){

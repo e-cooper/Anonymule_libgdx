@@ -2,8 +2,8 @@ package com.cs2340.anonymule.Tile;
 
 public class RiverTile extends Tile {
 
-    public RiverTile(int row, int col, String type) {
-        super(row, col, type);
+    public RiverTile(int x, int y) {
+        super(x, y);
     }
 
 }

@@ -2,6 +2,7 @@ package com.cs2340.anonymule.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -111,7 +112,9 @@ public class GameScreen implements Screen {
         batch.draw(currentGameScreen, 120, 300);
         batch.end();
 
-
+        /**
+         * depending on what mode its in, render different things
+         */
         switch (map.currentMode){
             case InitialLandGrab:
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Rectangle);
@@ -121,6 +124,7 @@ public class GameScreen implements Screen {
                     shapeRenderer.setColor(p.getColor());
                     for (Tile t: p.getPropertyList()){
                         shapeRenderer.rect(t.getX(), t.getY(), map.rectWidth, map.rectHeight);
+
                     }
                 }
 
@@ -129,6 +133,7 @@ public class GameScreen implements Screen {
             case Auction:
                 break;
             case Store:
+                anonymule.setScreen(new StoreScreen(anonymule, this));
                 break;
             case Pub:
                 break;
@@ -137,13 +142,20 @@ public class GameScreen implements Screen {
                 shapeRenderer.setColor(map.rectColor);
                 for(Player p : map.getPlayerList() ){
                     shapeRenderer.setColor(p.getColor());
+
                     for (Tile t: p.getPropertyList()){
                         shapeRenderer.rect(t.getX(), t.getY(), map.rectWidth, map.rectHeight);
+                        if(t.isMule()){
+                            shapeRenderer.setColor(t.getMuleColor());
+                            System.out.println(t.getMuleColor());
+                            shapeRenderer.rect(t.getX(),t.getY(), 10, -10);
+                        }
                     }
                 }
                 shapeRenderer.end();
                 shapeRenderer.begin(ShapeRenderer.ShapeType.FilledRectangle);
                 shapeRenderer.setColor(map.getCurrentPlayer().getColor());
+
                 shapeRenderer.filledRect(map.getCurrentPlayer().getX(), map.getCurrentPlayer().getY(), 10, 10);
                 shapeRenderer.end();
                 break;

@@ -7,9 +7,13 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class Player {
-    private String colorName, name;
+    private String colorName;
+    private String  name;
     private Point location;
     private Color color;
+    private int food;
+    private int energy;
+    private int smithore;
     private int x, y, money;
     private int race;
     private static int player_count = 0;
@@ -20,7 +24,7 @@ public class Player {
      */
 
     public Player(){
-        this("red", 1, "player" + (player_count+1), Color.RED);
+        this("red", 1, "player" + (player_count+1));
         player_count++;
     }
 
@@ -31,13 +35,17 @@ public class Player {
      * @param name Name of the player
      */
 
-    public Player(String colorName, int race, String name, Color color) {
+    public Player(String colorName, int race, String name) {
         this.colorName = colorName;
         this.race = race;
         this.name = name;
-        this.color = color;
         this.x = 343;
         this.y = 454;
+        food = 0;
+        energy = 0;
+        smithore = 0;
+        money = 1000;
+
     }
 
     /**
@@ -45,18 +53,14 @@ public class Player {
      * @return The color of the player
      */
 
-    public String getColorName() {
-        return colorName;
-    }
+
 
     /**
      * Sets the color of the player
      * @param color The new color of the player
      */
 
-    public void setColorName(String color) {
-        this.colorName = color;
-    }
+
 
     /**
      * Returns the race of the player
@@ -102,23 +106,42 @@ public class Player {
      */
 
     public void setAttributes(String colorName, int race, String name){
-        setColorName(colorName);
         setRace(race);
         setName(name);
+        setColor(colorName);
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    /**
+     *
+     * @param color   color to be set to
+     */
+    public void setColor(String color) {
+        if(color == "red")
+            this.color = Color.RED;
+        if(color == "green")
+            this.color = Color.GREEN;
+        if(color == "blue")
+            this.color = Color.BLUE;
+        if(color == "orange")
+            this.color = Color.ORANGE;
     }
 
     public Color getColor() {
         return color;
     }
 
+    public String getColorName(){
+        return colorName;
+    }
+
     public Point getLocation() {
         return location;
     }
 
+    /**
+     *
+     * @param location  where player is right now
+     */
     public void setLocation(Point location) {
         this.location = location;
     }
@@ -143,6 +166,10 @@ public class Player {
         return money;
     }
 
+    /**
+     *
+     * @param money    amount to set money to
+     */
     public void setMoney(int money) {
         this.money = money;
     }
@@ -152,8 +179,46 @@ public class Player {
     }
 
     public void printBro(){
-        System.out.println("Color: " + colorName);
+        System.out.println("Color: " + color);
         System.out.println("Race: " + race);
         System.out.println("Name: " + name);
     }
+
+    public void addFood(int x){
+        food += x;
+    }
+
+    public void subFood(int x){
+        food -= x;
+    }
+
+    public void addEnergy(int x){
+        energy += x;
+    }
+
+    public void subEnergy(int x){
+        energy -= x;
+    }
+    public void addSmithore(int x){
+        smithore += x;
+    }
+
+    public void subSmithore(int x){
+        smithore -= x;
+    }
+
+    public int getFood(){
+        return food;
+    }
+
+    public int getEnergy(){
+        return energy;
+    }
+
+    public int getSmithore(){
+        return smithore;
+    }
+
+
+
 }

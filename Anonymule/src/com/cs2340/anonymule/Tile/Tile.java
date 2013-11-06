@@ -14,13 +14,22 @@ public class Tile {
     private int cost = 300;
     private Player owner = null;
     private Color color;
+    boolean mule;
+    int muleType;
+    private Color muleColor;
 
     public Tile(int x, int y) {
         this.x = x;
         this.y = y;
+        mule = false;
 
     }
 
+    /**
+     *
+     * @param p player who bought property
+     * @return  true if bought
+     */
     public boolean buyTile(Player p) {
         if (this.canBuy == true && p.getMoney() >= cost) {
             p.setMoney(p.getMoney() - cost);
@@ -35,6 +44,10 @@ public class Tile {
         return canBuy;
     }
 
+    /**
+     *
+     * @param canBuy  can player buy
+     */
     public void setCanBuy(boolean canBuy) {
         this.canBuy = canBuy;
     }
@@ -43,6 +56,10 @@ public class Tile {
         return cost;
     }
 
+    /**
+     *
+     * @param cost cost to player
+     */
     public void setCost(int cost) {
         this.cost = cost;
     }
@@ -63,4 +80,36 @@ public class Tile {
         this.owner = owner;
     }
 
+    /**
+     *
+     * @param num type of mule bought
+     */
+    public void setMule(int num){
+        System.out.println("!!!");
+        switch(num){
+            case 1: muleType = 1;
+                muleColor = Color.YELLOW;
+                break;
+            case 2: muleType = 2;
+                muleColor = Color.PINK;
+                break;
+            case 3: muleType = 3;
+                muleColor = Color.CYAN;
+                break;
+
+        }
+        mule = true;
+    }
+
+    public boolean isMule(){
+        return mule;
+    }
+
+    public int muleType(){
+        return muleType;
+    }
+
+    public Color getMuleColor(){
+        return muleColor;
+    }
 }

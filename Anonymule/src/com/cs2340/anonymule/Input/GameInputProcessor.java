@@ -14,15 +14,25 @@ public class GameInputProcessor implements InputProcessor {
 
     Map map;
 
+    /**
+     *
+     * @param anonymule base anonymule game
+     */
     public GameInputProcessor(Anonymule anonymule){
         map = anonymule.getMap();
     }
 
+    /**
+     *
+     * @param keycode  key that is pressed
+     * @return   always false
+     */
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.ESCAPE){
             Gdx.app.exit();
         }
+        //if space, then let player get the property
         if(keycode == Input.Keys.SPACE){
             switch (map.currentMode){
                 case InitialLandGrab:
@@ -47,6 +57,7 @@ public class GameInputProcessor implements InputProcessor {
             }
 
         }
+        //depending on what mode the game is in, the keys correlate to different acttoins
         switch (map.currentMode){
             case InitialLandGrab:
                 break;
@@ -69,6 +80,9 @@ public class GameInputProcessor implements InputProcessor {
                 if(map.getCurrentPlayer().getX()>435 && map.getCurrentPlayer().getX()<475 && map.getCurrentPlayer().getY() > 353
                         &&map.getCurrentPlayer().getY()<391)
                     map.gamble();
+                if(map.getCurrentPlayer().getX()>153 && map.getCurrentPlayer().getX()<203 && map.getCurrentPlayer().getY() > 344
+                        &&map.getCurrentPlayer().getY()<384)
+                    map.enterStore();
 
                 break;
         }
@@ -86,7 +100,57 @@ public class GameInputProcessor implements InputProcessor {
             map.getCurrentPlayer().setX(map.getCurrentPlayer().getX()+10);
         }
 
+        /**
+         *  allow player to buy and install mule on the land
+         */
 
+        if(keycode == Input.Keys.F){
+            int x = map.getCurrentPlayer().getX();
+            int y = map.getCurrentPlayer().getY();
+
+            for (Tile t: map.getCurrentPlayer().getPropertyList()){
+                if(x-t.getX() < 56 && t.getY()-y < 51){
+                    if(!t.isMule())
+                        t.setMule(1);
+
+                }
+
+            }
+            map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
+        }
+        if(keycode == Input.Keys.E){
+            int x = map.getCurrentPlayer().getX();
+            int y = map.getCurrentPlayer().getY();
+
+            for (Tile t: map.getCurrentPlayer().getPropertyList()){
+                if(t.getX()+x < t.getX()+56 && t.getY()-y > t.getY()-51){
+
+                    if(!t.isMule())
+                        t.setMule(2);
+
+                }
+
+            }
+            map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
+        }
+        /**
+         *  allow player to buy and install mule on the land
+         */
+        if(keycode == Input.Keys.S){
+            int x = map.getCurrentPlayer().getX();
+            int y = map.getCurrentPlayer().getY();
+
+            for (Tile t: map.getCurrentPlayer().getPropertyList()){
+                if(t.getX()+x < t.getX()+56 && t.getY()-y > t.getY()-51){
+
+                    if(!t.isMule())
+                        t.setMule(3);
+
+                }
+
+            }
+            map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
+        }
 
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }

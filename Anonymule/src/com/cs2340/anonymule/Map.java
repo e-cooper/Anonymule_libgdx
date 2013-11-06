@@ -29,6 +29,8 @@ public class Map {
     private int j = 0;
     public boolean exitTimer = false;
     private Texture town;
+    private Texture store;
+
 
 
 
@@ -46,6 +48,7 @@ public class Map {
         if(map_type == 1){
             mainMap = new Texture(Gdx.files.internal("Anonymule/assets/textures/Map.jpg"));
             town = new Texture(Gdx.files.internal("Anonymule/assets/textures/town.jpg"));
+            store = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
             tileMap = new Tile[][]{
                     {new PlainsTile(120, 556), new PlainsTile(176, 556), new PlainsTile(231, 556), new MtnTile(287, 556), new RiverTile(343, 556), new MtnTile(399, 556), new PlainsTile(455, 556), new PlainsTile(511, 556), new MtnTile(567, 556)},
                     {new PlainsTile(120, 505), new MtnTile(170, 505), new PlainsTile(231, 505), new PlainsTile(287,505), new RiverTile(343, 505), new PlainsTile(399, 505), new PlainsTile(455, 505), new MtnTile(511, 505), new PlainsTile(567, 505)},
@@ -63,35 +66,40 @@ public class Map {
         nextTurn();
     }
 
+    /**
+     * calculates who will be the next turn and what to do for said turn
+     */
     public void nextTurn() {
         if(turn <= (player_count)){  //if its the first few turns, initiate the land grab
             initLandGrab();
         }else{
             currentMode = GameMode.MuleLand;
+            map = mainMap;
             startRound();
         }
 
-        turn++;
-        if (player + 1 == getPlayerList().size()) {
+
+        if (player == getPlayerList().size()-1) {
             player = 0;
         }
         else {
             player++;
         }
         currentPlayer = getPlayerList().get(player);
-
+        turn++;
     }
 
+    /**
+     * starts the main rounds with timers and stuff
+     */
     private void startRound(){
-        player = 0;
         Collections.sort(playerList, new CustomComparator());
         Timer.schedule(new Timer.Task(){
             public void run(){
-                currentPlayer = getPlayerList().get(player);
-                player++;
+                nextTurn();
             }
 
-        },1, 10, player_count-1);
+        },10, 10, player_count-1);
 
 
 
@@ -211,6 +219,9 @@ public class Map {
         player--;
     }
 
+    /**
+     * does basic logic to repeat a land grab for the players twice
+     */
     private void initLandGrab(){
         i = 0;
         j = 0;
@@ -239,14 +250,33 @@ public class Map {
         map = mainMap;
     }
 
+    /**
+     * clear timer and allocate player money
+     */
     public void gamble(){
         currentPlayer.setMoney(currentPlayer.getMoney()+100);
+        Timer.instance.clear();
+        nextTurn();
     }
 
+    /**
+     * simple compartor to see which player has more money
+     */
     private class CustomComparator implements Comparator<Player> {
         @Override
         public int compare(Player o1, Player o2) {
             return o1.getMoney()-(o2.getMoney());
         }
     }
+
+    /**
+     * change game state so player can enter store
+     */
+    public void enterStore() {
+        map = store;
+        currentMode = GameMode.Store;
+        Timer.instance.clear();
+    }
+
+
 }

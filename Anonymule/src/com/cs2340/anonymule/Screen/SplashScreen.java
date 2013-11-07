@@ -28,7 +28,7 @@ public class SplashScreen implements Screen {
 
     public SplashScreen(Anonymule anonymule){
         this.anonymule = anonymule;
-        skin = new Skin(Gdx.files.internal("Anonymule/assets/skins/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
         gameName = new Label("Anonymule", skin);        //Name of the game
         gameName.setPosition(160, 400);
         gameName.setFontScale(2);

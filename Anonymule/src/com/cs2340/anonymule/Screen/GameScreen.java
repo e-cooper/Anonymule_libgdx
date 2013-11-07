@@ -44,9 +44,9 @@ public class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         currentGameScreen = map.getMap();
-        whiteTexture = new Texture(Gdx.files.internal("Anonymule/assets/textures/whiteTexture.jpg"));
-        background = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_mapbg.jpg"));
-        skin = new Skin(Gdx.files.internal("Anonymule/assets/skins/uiskin.json"));
+        whiteTexture = new Texture(Gdx.files.internal("textures/whiteTexture.jpg"));
+        background = new Texture(Gdx.files.internal("textures/Concrete_mapbg.jpg"));
+        skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
         stage = new Stage();
 
         playerName = new Label("Player name: ", skin, "black");

@@ -30,12 +30,7 @@ public class Map {
     public boolean exitTimer = false;
     private Texture town;
     private Texture store;
-
-
-
-
     public static enum GameMode {InitialLandGrab, Auction, Store, Pub, MuleLand, Town};
-
     public GameMode currentMode = GameMode.InitialLandGrab;
 
     /**
@@ -46,9 +41,9 @@ public class Map {
         this(new ArrayList<Player>(), 1, 1);
 
         if(map_type == 1){
-            mainMap = new Texture(Gdx.files.internal("Anonymule/assets/textures/Map.jpg"));
-            town = new Texture(Gdx.files.internal("Anonymule/assets/textures/town.jpg"));
-            store = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
+            mainMap = new Texture(Gdx.files.internal("textures/Map.jpg"));
+            town = new Texture(Gdx.files.internal("textures/town.jpg"));
+            store = new Texture(Gdx.files.internal("textures/Concrete_splashbg.jpg"));
             tileMap = new Tile[][]{
                     {new PlainsTile(120, 556), new PlainsTile(176, 556), new PlainsTile(231, 556), new MtnTile(287, 556), new RiverTile(343, 556), new MtnTile(399, 556), new PlainsTile(455, 556), new PlainsTile(511, 556), new MtnTile(567, 556)},
                     {new PlainsTile(120, 505), new MtnTile(170, 505), new PlainsTile(231, 505), new PlainsTile(287,505), new RiverTile(343, 505), new PlainsTile(399, 505), new PlainsTile(455, 505), new MtnTile(511, 505), new PlainsTile(567, 505)},
@@ -61,6 +56,10 @@ public class Map {
 
 
     }
+    
+    /**
+     * Begins the turns
+     */
 
     public void startGame() {
         nextTurn();
@@ -98,17 +97,22 @@ public class Map {
             public void run(){
                 nextTurn();
             }
-
         },10, 10, player_count-1);
-
-
-
-
     }
+    
+    /**
+     * Get the player whose turn it is
+     * @return The player whose turn it is
+     */
 
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
+    
+    /**
+     * The turn the game is on
+     * @return The number of the turn
+     */
 
     public int getTurn() {
         return turn;
@@ -197,22 +201,46 @@ public class Map {
     public void setMap_type(int map_type) {
         this.map_type = map_type;
     }
+    
+    /**
+     * Get the tile holder
+     * @return The 2d array which holds the tiles
+     */
 
     public Tile[][] getTileMap() {
         return tileMap;
     }
+    
+    /**
+     * Get the texture of the map?
+     * @return The texture of the map?
+     */
 
     public Texture getMap() {
         return map;
     }
+    
+    /**
+     * Get the texture of the town?
+     * @return The texture of the town?
+     */
 
     public Texture getTown(){
         return town;
     }
+    
+    /**
+     * Get the tile the player is currently on
+     * @return The tile which the player is on
+     */
 
     public Tile getCurrentTile(){
         return tileMap[j][i];
     }
+    
+    /**
+     * For some reason, we are decrementing turn instead of incrementing. Wtf is this
+     */
 
     public void decrementTurn(){
         turn--;
@@ -243,9 +271,19 @@ public class Map {
 
         },1, 1);
     }
+    
+    /**
+     * I'm guessing this has to do with changing the screens, I dunno
+     */
+    
     public void mapToTown(){
         map = town;
     }
+    
+    /**
+     * I'm guessing this has to do with changing screens, I dunno
+     */
+    
     public void townToMap(){
         map = mainMap;
     }
@@ -260,7 +298,7 @@ public class Map {
     }
 
     /**
-     * simple compartor to see which player has more money
+     * simple comparator to see which player has more money
      */
     private class CustomComparator implements Comparator<Player> {
         @Override

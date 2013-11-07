@@ -55,10 +55,10 @@ public class MainMenuScreen implements Screen {
         batch = new SpriteBatch();
         stage = new Stage(480, 800, false);
 
-        skin = new Skin(Gdx.files.internal("Anonymule/assets/skins/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
 
         continueButton = new TextButton("Continue", skin);
-        background = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
+        background = new Texture(Gdx.files.internal("textures/Concrete_splashbg.jpg"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 480, 800);
         continueButton.setPosition(480 / 2 - 70, 800 / 2);

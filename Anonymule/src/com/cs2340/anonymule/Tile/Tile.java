@@ -17,6 +17,12 @@ public class Tile {
     boolean mule;
     int muleType;
     private Color muleColor;
+    
+    /**
+     * Constructor which sets up a tile object
+     * @param x The x-coordinate of the tile
+     * @param y The y-coordinate of the tile
+     */
 
     public Tile(int x, int y) {
         this.x = x;
@@ -39,6 +45,11 @@ public class Tile {
         }
         return false;
     }
+    
+    /**
+     * Checks if the tile can be bought
+     * @return false if cannot buy, true if can buy
+     */
 
     public boolean getCanBuy() {
         return canBuy;
@@ -57,31 +68,51 @@ public class Tile {
     }
 
     /**
-     *
+     * Sets the cost of the tile
      * @param cost cost to player
      */
     public void setCost(int cost) {
         this.cost = cost;
     }
+    
+    /**
+     * Get the x-coordinate
+     * @return The x-coordinate of the tile
+     */
 
     public int getX() {
         return x;
     }
+    
+    /**
+     * Get the y-coordinate
+     * @return The y-coordinate of the tile
+     */
 
     public int getY() {
         return y;
     }
+    
+    /**
+     * Get the owner of the tile
+     * @return The owner of the tile
+     */
 
     public Player getOwner() {
         return owner;
     }
+    
+    /**
+     * Set the owner of the tile
+     * @param owner The person who owns the tile
+     */
 
     public void setOwner(Player owner) {
         this.owner = owner;
     }
 
     /**
-     *
+     * Sets the mule on the tile
      * @param num type of mule bought
      */
     public void setMule(int num){
@@ -100,14 +131,29 @@ public class Tile {
         }
         mule = true;
     }
+    
+    /**
+     * Checks to see if there is a mule on the tile
+     * @return true if yes, false if no
+     */
 
     public boolean isMule(){
         return mule;
     }
+    
+    /**
+     * Getter for muleType on the tile
+     * @return The type of mule on the tile
+     */
 
     public int muleType(){
         return muleType;
     }
+    
+    /**
+     * Getter for the muleColor on the tile
+     * @return The color of the mule on the tile
+     */
 
     public Color getMuleColor(){
         return muleColor;

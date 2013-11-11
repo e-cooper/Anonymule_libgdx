@@ -210,16 +210,6 @@ public class Player {
     }
     
     /**
-     * This is useless, fix your shit if you really need this
-     */
-
-    public void printBro(){
-        System.out.println("Color: " + color);
-        System.out.println("Race: " + race);
-        System.out.println("Name: " + name);
-    }
-    
-    /**
      * Add food to player
      * @param x The amount of food to add
      */

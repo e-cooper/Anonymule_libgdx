@@ -1,6 +1,7 @@
 package com.cs2340.anonymule.Tile;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.cs2340.anonymule.Player;
 
 //import java.awt.Color;
@@ -12,11 +13,18 @@ public class Tile {
     private boolean canBuy = true;
     private String type;
     private int cost = 300;
-    private Player owner = null;
     private Color color;
     boolean mule;
     int muleType;
     private Color muleColor;
+    
+    /**
+     * Blank Constructor
+     */
+    
+    public Tile() {
+    	this(0, 0);
+    }
     
     /**
      * Constructor which sets up a tile object
@@ -39,7 +47,6 @@ public class Tile {
     public boolean buyTile(Player p) {
         if (this.canBuy == true && p.getMoney() >= cost) {
             p.setMoney(p.getMoney() - cost);
-            this.setOwner(p);
             this.setCanBuy(false);
             return true;
         }
@@ -91,24 +98,6 @@ public class Tile {
 
     public int getY() {
         return y;
-    }
-    
-    /**
-     * Get the owner of the tile
-     * @return The owner of the tile
-     */
-
-    public Player getOwner() {
-        return owner;
-    }
-    
-    /**
-     * Set the owner of the tile
-     * @param owner The person who owns the tile
-     */
-
-    public void setOwner(Player owner) {
-        this.owner = owner;
     }
 
     /**

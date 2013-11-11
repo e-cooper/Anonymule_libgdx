@@ -61,9 +61,9 @@ public class PlayerConfigScreen implements Screen {
         player_number.setPosition(220, 760);
 
         raceSelectBox = new SelectBox(playerRaces, skin);
-        raceSelectBox.setPosition(200, 545);
+        raceSelectBox.setPosition(200, 600);
         colorSelectBox = new SelectBox(playerColors, skin);
-        colorSelectBox.setPosition(200, 600);
+        colorSelectBox.setPosition(200, 545);
 
         playerNameField = new TextField("", skin);
         playerNameField.setPosition(200, 655);

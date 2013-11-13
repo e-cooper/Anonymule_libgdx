@@ -3,9 +3,13 @@ package com.cs2340.anonymule.Input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Base64Coder;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Timer;
 import com.cs2340.anonymule.Anonymule;
 import com.cs2340.anonymule.Map;
+import com.cs2340.anonymule.Player;
 import com.cs2340.anonymule.Tile.Tile;
 import java.util.Random;
 
@@ -14,8 +18,9 @@ public class GameInputProcessor implements InputProcessor {
 
 	Random random = new Random();
 	int randomEvents = random.nextInt(50) + 1;
+
     Map map;
-    
+    Player player;
 
     /**
      *
@@ -23,6 +28,7 @@ public class GameInputProcessor implements InputProcessor {
      */
     public GameInputProcessor(Anonymule anonymule){
         map = anonymule.getMap();
+        player = map.getCurrentPlayer();
     }
 
     /**
@@ -32,28 +38,29 @@ public class GameInputProcessor implements InputProcessor {
      */
     @Override
     public boolean keyDown(int keycode) {
-    	// Handle random Events after every keypress
-    	map.determineLowest();
-    	
-    	System.out.println("Random number: " + randomEvents);
-    	
-    	//System.out.println("Player properties:" + (map.getCurrentPlayer().getPropertyList()).get(index));
-    	printInventory();
+        // Handle random Events after every keypress
+        map.determineLowest();
+        
+        System.out.println("Random number: " + randomEvents);
+
+        printInventory();
         if(keycode == Input.Keys.ESCAPE){
+        	Json json = new Json();
+        	FileHandle saveFile = Gdx.files.local("data/savefile.json");
+        	String mapDetails = json.toJson(map);
+        	String mapDetailsEncoded = Base64Coder.encodeString(mapDetails);
+        	saveFile.writeString(mapDetailsEncoded, false);
+//            System.out.println(json.prettyPrint(map));
             Gdx.app.exit();
         }
         //if space, then let player get the property
-        if(keycode == Input.Keys.Q){
-        	//map.nextTurn();
-        }
         if(keycode == Input.Keys.SPACE){
-        	handleRandomEvents();
+            handleRandomEvents();
             switch (map.currentMode){
                 case InitialLandGrab:
                     if(map.getCurrentTile().getCanBuy()){
-                        map.getCurrentTile().setOwner(map.getCurrentPlayer());
                         map.getCurrentTile().setCanBuy(false);
-                        map.getCurrentPlayer().getPropertyList().add(map.getCurrentTile());
+                        player.getPropertyList().add(map.getCurrentTile());
                     }else{
                         map.decrementTurn();
                     }
@@ -82,8 +89,8 @@ public class GameInputProcessor implements InputProcessor {
             case Pub:
                 break;
             case MuleLand:
-                if(map.getCurrentPlayer().getX()>343 && map.getCurrentPlayer().getX()<399 && map.getCurrentPlayer().getY() > 403
-                        &&map.getCurrentPlayer().getY()<453){
+                if(player.getX()>343 && player.getX()<399 && player.getY() > 403
+                        &&player.getY()<453){
 
                     map.currentMode = Map.GameMode.Town;
                     map.mapToTown();
@@ -91,31 +98,55 @@ public class GameInputProcessor implements InputProcessor {
                 }
                 break;
             case Town:
-                if(map.getCurrentPlayer().getX()>435 && map.getCurrentPlayer().getX()<475 && map.getCurrentPlayer().getY() > 353
-                        &&map.getCurrentPlayer().getY()<391)
+                if(player.getX()>435 && player.getX()<475 && player.getY() > 353
+                        &&player.getY()<391)
                     map.gamble();
-                if(map.getCurrentPlayer().getX()>153 && map.getCurrentPlayer().getX()<203 && map.getCurrentPlayer().getY() > 344
-                        &&map.getCurrentPlayer().getY()<384)
+                if(player.getX()>153 && player.getX()<203 && player.getY() > 344
+                        &&player.getY()<384)
                     map.enterStore();
+                if (player.getX() <= 130 || player.getX() >= 622 || player.getY() <= 307 || player.getY() >= 536 ) {
+                	map.currentMode = Map.GameMode.MuleLand;
+                	if (player.getX() > 399) {
+                		player.setX(399);
+                	}
+                	else if (player.getX() < 343) {
+                		player.setX(343);
+                	}
+                	else if (player.getY() > 453) {
+                		player.setY(453);
+                	}
+                	else if (player.getY() < 403) {
+                		player.setY(403);
+                	}
+                	map.townToMap();
+                }
 
                 break;
         }
 
         if(keycode == Input.Keys.DPAD_UP){
-        	handleRandomEvents();
-            map.getCurrentPlayer().setY(map.getCurrentPlayer().getY()+10);
+        	if (player.getY()+10 <= 546) {
+                handleRandomEvents();
+        		player.setY(player.getY()+10);
+        	}
         }
         if(keycode == Input.Keys.DPAD_DOWN){
-        	handleRandomEvents();
-            map.getCurrentPlayer().setY(map.getCurrentPlayer().getY()-10);
+        	if (player.getY()-10 >= 297) {
+                handleRandomEvents();
+        		player.setY(player.getY()-10);
+        	}
         }
         if(keycode == Input.Keys.DPAD_LEFT){
-        	handleRandomEvents();
-            map.getCurrentPlayer().setX(map.getCurrentPlayer().getX()-10);
+        	if (player.getX()-10 >= 120) {
+                handleRandomEvents();
+        		player.setX(player.getX()-10);
+        	}
         }
         if(keycode == Input.Keys.DPAD_RIGHT){
-        	handleRandomEvents();
-            map.getCurrentPlayer().setX(map.getCurrentPlayer().getX()+10);
+        	if (player.getX()+10 <= 632) {
+                handleRandomEvents();
+        		player.setX(player.getX()+10);
+        	}
         }
 
         /**
@@ -173,44 +204,6 @@ public class GameInputProcessor implements InputProcessor {
             }
             map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
         }
-        /*
-        if(keycode == Input.Keys.E){
-            int x = map.getCurrentPlayer().getX();
-            int y = map.getCurrentPlayer().getY();
-
-            for (Tile t: map.getCurrentPlayer().getPropertyList()){
-                if(t.getX()+x < t.getX()+56 && t.getY()-y > t.getY()-51){
-
-                    if(!t.isMule()){
-                        t.setMule(2);
-                        map.getCurrentPlayer().addEnergyPlant();
-                    }
-
-                }
-
-            }
-            map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
-        }
-        /**
-         *  allow player to buy and install mule on the land
-        */
-        /*
-        if(keycode == Input.Keys.S){
-            int x = map.getCurrentPlayer().getX();
-            int y = map.getCurrentPlayer().getY();
-
-            for (Tile t: map.getCurrentPlayer().getPropertyList()){
-                if(t.getX()+x < t.getX()+56 && t.getY()-y > t.getY()-51){
-
-                    if(!t.isMule()){
-                        t.setMule(3);
-                        map.getCurrentPlayer().addSmithorePlant();
-                    }
-                }
-
-            }
-            map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
-        }*/
 
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }

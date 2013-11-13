@@ -51,20 +51,6 @@ public class Player {
     }
 
     /**
-     * Returns the color of the player
-     * @return The color of the player
-     */
-
-
-
-    /**
-     * Sets the color of the player
-     * @param color The new color of the player
-     */
-
-
-
-    /**
      * Returns the race of the player
      * @return The race of the player
      */
@@ -114,8 +100,8 @@ public class Player {
     }
 
     /**
-     *
-     * @param color   color to be set to
+     * Sets the color of the player
+     * @param color Color to be set to
      */
     public void setColor(String color) {
         if(color == "red")
@@ -127,14 +113,29 @@ public class Player {
         if(color == "orange")
             this.color = Color.ORANGE;
     }
+    
+    /**
+     * Returns the color of the player
+     * @return The color of the player
+     */
 
     public Color getColor() {
         return color;
     }
+    
+    /**
+     * Returns the name of the color as a string
+     * @return The string associated with the color
+     */
 
     public String getColorName(){
         return colorName;
     }
+    
+    /**
+     * Returns the location of the player as a point
+     * @return The point of the player
+     */
 
     public Point getLocation() {
         return location;
@@ -147,75 +148,145 @@ public class Player {
     public void setLocation(Point location) {
         this.location = location;
     }
+    
+    /**
+     * Getter for player's x-coordinate
+     * @return The x-coordinate of the player
+     */
 
     public int getX() {
         return x;
     }
+    
+    /**
+     * Sets the x-coordinate of the player
+     * @param x The x-coordinate to set the player to
+     */
 
     public void setX(int x) {
         this.x = x;
     }
+    
+    /**
+     * Getter for player's y-coordinate
+     * @return The y-coordinate of the player
+     */
 
     public int getY() {
         return y;
     }
+    
+    /**
+     * Sets the y-coordinate of the player
+     * @param y The y-coordinate to set the player to
+     */
 
     public void setY(int y) {
         this.y = y;
     }
+    
+    /**
+     * Get the amount of money the player has
+     * @return The amount of money the player has
+     */
 
     public int getMoney() {
         return money;
     }
 
     /**
-     *
-     * @param money    amount to set money to
+     * Set the player's money count
+     * @param money Amount to set money to
      */
     public void setMoney(int money) {
         this.money = money;
     }
+    
+    /**
+     * Get the properties a player owns
+     * @return The list of properties owned by the player
+     */
 
     public ArrayList<Tile> getPropertyList(){
         return playerProperties;
     }
-
-    public void printBro(){
-        System.out.println("Color: " + color);
-        System.out.println("Race: " + race);
-        System.out.println("Name: " + name);
-    }
+    
+    /**
+     * Add food to player
+     * @param x The amount of food to add
+     */
 
     public void addFood(int x){
         food += x;
     }
+    
+    /**
+     * Subtract food from player
+     * @param x Amount of food to subtract
+     */
 
     public void subFood(int x){
         food -= x;
     }
+    
+    /**
+     * Add energy to player
+     * @param x Amount of energy to add
+     */
 
     public void addEnergy(int x){
         energy += x;
     }
+    
+    /**
+     * Subtract energy from player
+     * @param x Amount of energy to subtract
+     */
 
     public void subEnergy(int x){
         energy -= x;
     }
+    
+    /**
+     * Add smithore to player
+     * @param x Amount of smithore to add
+     */
+    
     public void addSmithore(int x){
         smithore += x;
     }
+    
+    /**
+     * Subtract the smithore from player
+     * @param x Amount of smithore to subtract
+     */
 
     public void subSmithore(int x){
         smithore -= x;
     }
+    
+    /**
+     * Getter for the food of player
+     * @return Amount of food player has
+     */
 
     public int getFood(){
         return food;
     }
+    
+    /**
+     * Getter for the energy of the player
+     * @return Amount of energy the player has
+     */
 
     public int getEnergy(){
         return energy;
     }
+    
+    /**
+     * Getter for the smithore of the player
+     * @return Amount of smithore the player has
+     */
 
     public int getSmithore(){
         return smithore;
@@ -252,9 +323,4 @@ public class Player {
 	public void addFoodPlant() {
 		foodPlant++;
 	}
-
-	
-
-
-
 }

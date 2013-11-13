@@ -12,42 +12,58 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
-public class Map {
+public class Map implements Serializable{
     private ArrayList<Player> playerList;
     private int difficulty, map_type;
-    private Texture mainMap;
-    private Texture map;
+    private Texture map, mainMap, town, store;
     public static int player_count;
     private Player currentPlayer;
     private int turn, player;
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
     public int rectWidth = 56;
     public int rectHeight = -51;
     public int rectX = 120;
     public int rectY = 556;
     public Color rectColor = Color.RED;
-    public Tile[][] tileMap;
+    public Tile[][] tileMap = new Tile[][]
+    		{
+            {new PlainsTile(120, 556), new PlainsTile(176, 556), new PlainsTile(231, 556), new MtnTile(287, 556), new RiverTile(343, 556), new MtnTile(399, 556), new PlainsTile(455, 556), new PlainsTile(511, 556), new MtnTile(567, 556)},
+            {new PlainsTile(120, 505), new MtnTile(170, 505), new PlainsTile(231, 505), new PlainsTile(287,505), new RiverTile(343, 505), new PlainsTile(399, 505), new PlainsTile(455, 505), new MtnTile(511, 505), new PlainsTile(567, 505)},
+            {new PlainsTile(120, 454), new PlainsTile(170, 454), new PlainsTile(231, 454), new MtnTile(287,454), new TownTile(343, 454), new MtnTile(399, 454), new PlainsTile(455, 454), new PlainsTile(511, 454), new PlainsTile(567, 454)},
+            {new MtnTile(120, 403), new PlainsTile(170, 403), new PlainsTile(231, 403), new PlainsTile(287,403), new RiverTile(343, 403), new PlainsTile(399, 403), new MtnTile(455, 403), new PlainsTile(511, 403), new PlainsTile(567, 403)},
+            {new PlainsTile(120, 352),  new PlainsTile(170, 352), new MtnTile(231, 352), new PlainsTile(287,352), new RiverTile(343, 352), new PlainsTile(399, 352), new PlainsTile(455, 352), new MtnTile(511, 352), new PlainsTile(567, 352)}
+    		};
     private int i = 0;
     private int j = 0;
     public boolean exitTimer = false;
-    private Texture town;
-    private Texture store;
+    public static enum GameMode {InitialLandGrab, Auction, Store, Pub, MuleLand, Town};
+    public GameMode currentMode = GameMode.InitialLandGrab;
     private int randomNumber;
     private String randomEventsStatus = "";
     Random randomGenerator = new Random();
-
-    
-    public static enum GameMode {InitialLandGrab, Auction, Store, Pub, MuleLand, Town};
-
-    public GameMode currentMode = GameMode.InitialLandGrab;
 
     /**
      * Constructs a map with no players, difficulty 1(Easy) and Map type 1
      */
 
-    public Map(){
+    public Map() {
         this(new ArrayList<Player>(), 1, 1);
+    }
+    
+    /**
+     * Constructs a map with the given player arraylist, difficulty and map type
+     * @param playerList The player list
+     * @param difficulty The difficulty of the map
+     * @param map_type The map type
+     */
 
+    public Map(ArrayList<Player> playerList, int difficulty, int map_type) {
+        this.playerList = playerList;
+        this.difficulty = difficulty;
+        this.map_type = map_type;
+        player = 0;
+        turn = 1;
+        currentPlayer = null;
+        
         if(map_type == 1){
             mainMap = new Texture(Gdx.files.internal("Anonymule/assets/textures/Map.jpg"));
             town = new Texture(Gdx.files.internal("Anonymule/assets/textures/town.jpg"));
@@ -61,9 +77,11 @@ public class Map {
             };
         }
         map = mainMap;
-
-
     }
+    
+    /**
+     * Begins the turns
+     */
 
     public void startGame() {
         nextTurn();
@@ -73,10 +91,11 @@ public class Map {
      * calculates who will be the next turn and what to do for said turn
      */
     public void nextTurn() {
+<<<<<<< HEAD
     	System.out.println("DEBUG: Next turn method from the map class called!");
     	calculateProduction();
     	
-        if(turn <= (player_count)){  //if its the first few turns, initiate the land grab
+        if(turn <= (player_count*2)){  //if its the first few turns, initiate the land grab
             initLandGrab();
         }else{
             currentMode = GameMode.MuleLand;
@@ -132,38 +151,25 @@ public class Map {
             public void run(){
                 nextTurn();
             }
-
         },10, 10, player_count-1);
-
-
-
-
     }
+    
+    /**
+     * Get the player whose turn it is
+     * @return The player whose turn it is
+     */
 
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
+    
+    /**
+     * The turn the game is on
+     * @return The number of the turn
+     */
 
     public int getTurn() {
         return turn;
-    }
-
-
-    /**
-     * Constructs a map with the given player arraylist, difficulty and map type
-     * @param playerList The player list
-     * @param difficulty The difficulty of the map
-     * @param map_type The map type
-     */
-
-    public Map(ArrayList<Player> playerList, int difficulty, int map_type) {
-        this.playerList = playerList;
-        this.difficulty = difficulty;
-        this.map_type = map_type;
-        player = 0;
-        turn = 1;
-        currentPlayer = null;
-
     }
 
     /**
@@ -191,6 +197,7 @@ public class Map {
      * Sets the list of the players to this new list
      * @param playerList The new list of players
      */
+
     public void setPlayerList(ArrayList<Player> playerList) {
         this.playerList = playerList;
     }
@@ -230,22 +237,46 @@ public class Map {
     public void setMap_type(int map_type) {
         this.map_type = map_type;
     }
+    
+    /**
+     * Get the tile holder
+     * @return The 2d array which holds the tiles
+     */
 
     public Tile[][] getTileMap() {
         return tileMap;
     }
+    
+    /**
+     * Get the texture of the map?
+     * @return The texture of the map?
+     */
 
     public Texture getMap() {
         return map;
     }
+    
+    /**
+     * Get the texture of the town?
+     * @return The texture of the town?
+     */
 
     public Texture getTown(){
         return town;
     }
+    
+    /**
+     * Get the tile the player is currently on
+     * @return The tile which the player is on
+     */
 
     public Tile getCurrentTile(){
         return tileMap[j][i];
     }
+    
+    /**
+     * decreases turn, changes player to last player
+     */
 
     public void decrementTurn(){
         turn--;
@@ -337,9 +368,19 @@ public class Map {
 
         },1, 1);
     }
+    
+    /**
+     * I'm guessing this has to do with changing the screens, I dunno
+     */
+    
     public void mapToTown(){
         map = town;
     }
+    
+    /**
+     * I'm guessing this has to do with changing screens, I dunno
+     */
+
     public void townToMap(){
         map = mainMap;
     }
@@ -378,6 +419,41 @@ public class Map {
 
 	public void setRandomEventsStatus(String randomEventsStatus) {
 		this.randomEventsStatus = randomEventsStatus;
+    }
+
+    /**
+     * write values to json file for saving
+     * @json The json object to be used to write to
+     */
+	@Override
+	public void write(Json json) {
+		json.writeValue( "playerList", playerList );
+        json.writeValue( "difficulty", difficulty );
+        json.writeValue( "map_type", map_type );
+        json.writeValue( "player_count", player_count );
+        json.writeValue( "currentPlayer", currentPlayer );
+        json.writeValue( "turn", turn );
+        json.writeValue( "player", player );
+        json.writeValue( "tileMap", tileMap );
+        json.writeValue( "currentMode", currentMode );
+	}
+
+    /**
+     * read values from json file for loading
+     * @json The json object to be used to load from
+     * @jsonData The data from the json file
+     */
+	@Override
+	public void read(Json json, OrderedMap<String, Object> jsonData) {
+		playerList = json.readValue( "playerList", ArrayList.class, Player.class, jsonData );
+        difficulty = json.readValue( "difficulty", Integer.class, jsonData );
+        map_type = json.readValue( "map_type", Integer.class, jsonData );
+        player_count = json.readValue( "player_count", Integer.class, jsonData );
+        currentPlayer = json.readValue( "currentPlayer", Player.class, jsonData);
+        turn = json.readValue( "turn", Integer.class, jsonData );
+        player = json.readValue( "player", Integer.class, jsonData );
+        tileMap = json.readValue( "tileMap", Tile[][].class, jsonData );
+        currentMode = json.readValue( "credits", GameMode.class, jsonData );
 	}
 
 

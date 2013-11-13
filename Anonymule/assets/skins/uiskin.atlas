@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eli
 
 uiskin.png
 format: RGBA8888
@@ -196,6 +199,7 @@ white
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
+<<<<<<< HEAD
 =======
 
 uiskin.png
@@ -395,4 +399,6 @@ white
   orig: 1, 1
   offset: 0, 0
 >>>>>>> 59eaac163cf654d68b8f9b6308a47f1d67451d90
+=======
+>>>>>>> eli
   index: -1

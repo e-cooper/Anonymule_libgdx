@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eli
 info face="Khmer OS" size=32 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=0,0
 common lineHeight=65 base=41 scaleW=512 scaleH=512 pages=1 packed=0
 page id=0 file="khmer.png"
@@ -98,6 +101,7 @@ char id=96   x=434     y=58     width=9     height=7     xoffset=0     yoffset=1
 char id=46   x=443     y=58     width=5     height=5     xoffset=3     yoffset=37    xadvance=9     page=0  chnl=0 
 char id=45   x=448     y=58     width=10     height=4     xoffset=1     yoffset=30    xadvance=11     page=0  chnl=0 
 char id=95   x=458     y=58     width=21     height=3     xoffset=-1     yoffset=45    xadvance=18     page=0  chnl=0 
+<<<<<<< HEAD
 =======
 info face="Khmer OS" size=32 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=0,0
 common lineHeight=65 base=41 scaleW=512 scaleH=512 pages=1 packed=0
@@ -199,3 +203,5 @@ char id=46   x=443     y=58     width=5     height=5     xoffset=3     yoffset=3
 char id=45   x=448     y=58     width=10     height=4     xoffset=1     yoffset=30    xadvance=11     page=0  chnl=0 
 char id=95   x=458     y=58     width=21     height=3     xoffset=-1     yoffset=45    xadvance=18     page=0  chnl=0 
 >>>>>>> 59eaac163cf654d68b8f9b6308a47f1d67451d90
+=======
+>>>>>>> eli

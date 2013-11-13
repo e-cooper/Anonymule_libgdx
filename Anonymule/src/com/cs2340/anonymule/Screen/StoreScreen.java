@@ -58,6 +58,12 @@ public class StoreScreen implements Screen {
     private GameScreen gameScreen;
 
     private SpriteBatch batch;
+    
+    /**
+     * Constructor which sets up the store screen
+     * @param anonymule The game instance
+     * @param screen The current gamescreen
+     */
 
     public StoreScreen(Anonymule anonymule, GameScreen screen){
         gameScreen = screen;
@@ -184,6 +190,10 @@ public class StoreScreen implements Screen {
 
 
     }
+    
+    /**
+     * Allows player to buy from stores in town
+     */
 
     public void buy(){
         int money = 0;
@@ -211,6 +221,10 @@ public class StoreScreen implements Screen {
 
 
     }
+    
+    /**
+     * Allows player to sell to store
+     */
 
     public void sell(){
         int money = 0;
@@ -235,6 +249,10 @@ public class StoreScreen implements Screen {
         }
 
     }
+    
+    /**
+     * Changes screen to the appropriate other screen after exiting town
+     */
 
     public void done(){
         anonymule.setScreen(gameScreen);
@@ -242,7 +260,10 @@ public class StoreScreen implements Screen {
         map.townToMap();
         Gdx.input.setInputProcessor(new GameInputProcessor(anonymule));
     }
-
+    
+    /**
+     * HUD for inventory values
+     */
 
     @Override
     public void render(float delta) {

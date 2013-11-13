@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> eli
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: default.fnt } },
 com.badlogic.gdx.graphics.Color: {
@@ -54,6 +57,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
 	default: { minus: tree-minus, plus: tree-plus, selection: default-select-selection }
 }
+<<<<<<< HEAD
 =======
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: { default-font: { file: default.fnt } },
@@ -111,4 +115,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
 	default: { minus: tree-minus, plus: tree-plus, selection: default-select-selection }
 }
 >>>>>>> 59eaac163cf654d68b8f9b6308a47f1d67451d90
+=======
+>>>>>>> eli
 }

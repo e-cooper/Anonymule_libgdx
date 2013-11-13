@@ -34,4 +34,13 @@ public class Anonymule extends Game implements ApplicationListener{
     public Map getMap() {
         return map;
     }
+    
+    /**
+     * Sets the map for the game
+     * @param map The map of the game
+     */
+    
+    public void setMap(Map map) {
+    	this.map = map;
+    }
 }

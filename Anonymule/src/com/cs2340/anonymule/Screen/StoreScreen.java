@@ -69,7 +69,7 @@ public class StoreScreen implements Screen {
         gameScreen = screen;
         this.anonymule = anonymule;
         map = anonymule.getMap();
-        skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("Anonymule/assets/skins/uiskin.json"));
         stage = new Stage(480, 800, false);
         batch = new SpriteBatch();
 

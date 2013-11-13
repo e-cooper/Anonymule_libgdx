@@ -15,6 +15,8 @@ public class Player {
     private int energy;
     private int smithore;
     private int x, y, money;
+    private int foodPlant = 0, energyPlant = 0, smithorePlant = 0;
+    private boolean isLowest = false;
     private int race;
     private static int player_count = 0;
     private ArrayList<Tile> playerProperties = new ArrayList<Tile>();
@@ -290,6 +292,35 @@ public class Player {
         return smithore;
     }
 
+	public boolean isLowest() {
+		return isLowest;
+	}
 
+	public void setLowest(boolean isLowest) {
+		this.isLowest = isLowest;
+	}
 
+	public int getSmithorePlant() {
+		return smithorePlant;
+	}
+
+	public void addSmithorePlant() {
+		smithorePlant++;
+	}
+
+	public int getEnergyPlant() {
+		return energyPlant;
+	}
+
+	public void addEnergyPlant() {
+		energyPlant++;
+	}
+
+	public int getFoodPlant() {
+		return foodPlant;
+	}
+
+	public void addFoodPlant() {
+		foodPlant++;
+	}
 }

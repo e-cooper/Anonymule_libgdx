@@ -3,14 +3,14 @@ package com.cs2340.anonymule;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.Json.Serializable;
-import com.badlogic.gdx.utils.OrderedMap;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.cs2340.anonymule.Tile.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Random;
 
 public class Map implements Serializable{
     private ArrayList<Player> playerList;
@@ -37,6 +37,9 @@ public class Map implements Serializable{
     public boolean exitTimer = false;
     public static enum GameMode {InitialLandGrab, Auction, Store, Pub, MuleLand, Town};
     public GameMode currentMode = GameMode.InitialLandGrab;
+    private int randomNumber;
+    private String randomEventsStatus = "";
+    Random randomGenerator = new Random();
 
     /**
      * Constructs a map with no players, difficulty 1(Easy) and Map type 1
@@ -62,9 +65,9 @@ public class Map implements Serializable{
         currentPlayer = null;
         
         if(map_type == 1){
-            mainMap = new Texture(Gdx.files.internal("textures/Map.jpg"));
-            town = new Texture(Gdx.files.internal("textures/town.jpg"));
-            store = new Texture(Gdx.files.internal("textures/Concrete_splashbg.jpg"));
+            mainMap = new Texture(Gdx.files.internal("Anonymule/assets/textures/Map.jpg"));
+            town = new Texture(Gdx.files.internal("Anonymule/assets/textures/town.jpg"));
+            store = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
             tileMap = new Tile[][]{
                     {new PlainsTile(120, 556), new PlainsTile(176, 556), new PlainsTile(231, 556), new MtnTile(287, 556), new RiverTile(343, 556), new MtnTile(399, 556), new PlainsTile(455, 556), new PlainsTile(511, 556), new MtnTile(567, 556)},
                     {new PlainsTile(120, 505), new MtnTile(170, 505), new PlainsTile(231, 505), new PlainsTile(287,505), new RiverTile(343, 505), new PlainsTile(399, 505), new PlainsTile(455, 505), new MtnTile(511, 505), new PlainsTile(567, 505)},
@@ -74,7 +77,6 @@ public class Map implements Serializable{
             };
         }
         map = mainMap;
-
     }
     
     /**
@@ -89,6 +91,10 @@ public class Map implements Serializable{
      * calculates who will be the next turn and what to do for said turn
      */
     public void nextTurn() {
+<<<<<<< HEAD
+    	System.out.println("DEBUG: Next turn method from the map class called!");
+    	calculateProduction();
+    	
         if(turn <= (player_count*2)){  //if its the first few turns, initiate the land grab
             initLandGrab();
         }else{
@@ -97,7 +103,7 @@ public class Map implements Serializable{
             startRound();
         }
 
-
+       // Put code in to raise resource
         if (player == getPlayerList().size()-1) {
             player = 0;
         }
@@ -109,6 +115,34 @@ public class Map implements Serializable{
     }
 
     /**
+     * calculates the units of production for the next round
+     */
+    private void calculateProduction() {
+    	//Case if player has a food plant
+		if (currentPlayer.getFoodPlant() > 0 && currentPlayer.getEnergy() > 3){
+			int plants = currentPlayer.getFoodPlant();
+			currentPlayer.addFood(plants*3);
+			currentPlayer.addEnergy(-(plants*3));
+		}
+		
+		
+		//Case if player has an energy plant
+		if (currentPlayer.getEnergyPlant() > 0 && currentPlayer.getEnergy() > 3){
+			int plants = currentPlayer.getEnergyPlant();
+			currentPlayer.addEnergy(plants*3*2);
+			currentPlayer.addEnergy(-(plants*3));
+		}
+
+		//Case if player has a smithore plant
+		if (currentPlayer.getSmithorePlant() > 0 && currentPlayer.getEnergy() > 3){
+			int plants = currentPlayer.getSmithorePlant();
+			currentPlayer.addSmithore(plants*3);
+			currentPlayer.addEnergy(-(plants*3));
+		}
+
+	}
+
+	/**
      * starts the main rounds with timers and stuff
      */
     private void startRound(){
@@ -248,7 +282,68 @@ public class Map implements Serializable{
         turn--;
         player--;
     }
-
+    
+    /**
+     * Determines who has the least money so bad random events don't affect that player
+     */
+    public void determineLowest(){
+    		if(playerList.size()  == 2){	//2 players
+    			if(playerList.get(0).getMoney() < playerList.get(1).getMoney()){
+    				playerList.get(0).setLowest(true);
+    				playerList.get(1).setLowest(false);
+    			}
+    		}	//ends 2 player case
+    		
+    		else if(playerList.size() == 3){
+    			if(playerList.get(0).getMoney() < playerList.get(1).getMoney() && playerList.get(0).getMoney() < playerList.get(2).getMoney()){
+    				playerList.get(0).setLowest(true);
+    				playerList.get(1).setLowest(false);
+    				playerList.get(2).setLowest(false);
+    			}
+    			else if(playerList.get(1).getMoney() < playerList.get(0).getMoney() && playerList.get(1).getMoney() < playerList.get(2).getMoney()){
+    				playerList.get(0).setLowest(false);
+    				playerList.get(1).setLowest(true);
+    				playerList.get(2).setLowest(false);
+    			}
+    			else if(playerList.get(2).getMoney() < playerList.get(0).getMoney() && playerList.get(2).getMoney() < playerList.get(1).getMoney()){
+    				playerList.get(0).setLowest(false);
+    				playerList.get(1).setLowest(false);
+    				playerList.get(2).setLowest(true);
+    			}
+    		} // ends 3 player case
+    		
+    		else if(playerList.size() == 4){
+    			if(playerList.get(0).getMoney() < playerList.get(1).getMoney() && playerList.get(0).getMoney() < playerList.get(2).getMoney()
+    				&& playerList.get(0).getMoney() < playerList.get(3).getMoney()){
+    				playerList.get(0).setLowest(true);
+    				playerList.get(1).setLowest(false);
+    				playerList.get(2).setLowest(false);
+    				playerList.get(3).setLowest(false);
+    			}
+    			else if(playerList.get(1).getMoney() < playerList.get(0).getMoney() && playerList.get(1).getMoney() < playerList.get(2).getMoney()
+        				&& playerList.get(1).getMoney() < playerList.get(3).getMoney()){
+        				playerList.get(0).setLowest(false);
+        				playerList.get(1).setLowest(true);
+        				playerList.get(2).setLowest(false);
+        				playerList.get(3).setLowest(false);
+        			}
+    			else if(playerList.get(2).getMoney() < playerList.get(1).getMoney() && playerList.get(2).getMoney() < playerList.get(0).getMoney()
+        				&& playerList.get(2).getMoney() < playerList.get(3).getMoney()){
+        				playerList.get(0).setLowest(false);
+        				playerList.get(1).setLowest(false);
+        				playerList.get(2).setLowest(true);
+        				playerList.get(3).setLowest(false);
+        			}
+    			else if(playerList.get(3).getMoney() < playerList.get(1).getMoney() && playerList.get(3).getMoney() < playerList.get(2).getMoney()
+        				&& playerList.get(3).getMoney() < playerList.get(0).getMoney()){
+        				playerList.get(0).setLowest(false);
+        				playerList.get(1).setLowest(false);
+        				playerList.get(2).setLowest(false);
+        				playerList.get(3).setLowest(true);
+        			}
+    		} //ends 4 player case
+    	}
+    
     /**
      * does basic logic to repeat a land grab for the players twice
      */
@@ -285,7 +380,7 @@ public class Map implements Serializable{
     /**
      * I'm guessing this has to do with changing screens, I dunno
      */
-    
+
     public void townToMap(){
         map = mainMap;
     }
@@ -300,7 +395,7 @@ public class Map implements Serializable{
     }
 
     /**
-     * simple comparator to see which player has more money
+     * simple compartor to see which player has more money
      */
     private class CustomComparator implements Comparator<Player> {
         @Override
@@ -318,6 +413,18 @@ public class Map implements Serializable{
         Timer.instance.clear();
     }
 
+	public String getRandomEventsStatus() {
+		return randomEventsStatus;
+	}
+
+	public void setRandomEventsStatus(String randomEventsStatus) {
+		this.randomEventsStatus = randomEventsStatus;
+    }
+
+    /**
+     * write values to json file for saving
+     * @json The json object to be used to write to
+     */
 	@Override
 	public void write(Json json) {
 		json.writeValue( "playerList", playerList );
@@ -331,6 +438,11 @@ public class Map implements Serializable{
         json.writeValue( "currentMode", currentMode );
 	}
 
+    /**
+     * read values from json file for loading
+     * @json The json object to be used to load from
+     * @jsonData The data from the json file
+     */
 	@Override
 	public void read(Json json, OrderedMap<String, Object> jsonData) {
 		playerList = json.readValue( "playerList", ArrayList.class, Player.class, jsonData );

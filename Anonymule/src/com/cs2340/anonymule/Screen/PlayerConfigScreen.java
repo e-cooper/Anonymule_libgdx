@@ -40,10 +40,10 @@ public class PlayerConfigScreen implements Screen {
 
     public PlayerConfigScreen(Anonymule anonymule){
         this.anonymule = anonymule;
-        skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
+        skin = new Skin(Gdx.files.internal("Anonymule/assets/skins/uiskin.json"));
         stage = new Stage(480, 800, false);
         batch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("textures/Concrete_playerbg.jpg"));
+        background = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_playerbg.jpg"));
 
         playerColors = new String[]{"red", "green", "blue", "orange"};
         playerRaces = new Integer[]{1, 2, 3, 4};

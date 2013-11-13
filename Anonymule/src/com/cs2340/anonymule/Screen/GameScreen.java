@@ -26,8 +26,11 @@ public class GameScreen implements Screen {
     private Texture currentGameScreen;
     private Skin skin;
     private Stage stage;
-    private Label playerName, color, race, money;
+    private Label playerName, color, race, money, inventory, plants;
     private Label nameValue, colorValue, raceValue, moneyValue;
+    private Label foodResourceValue, energyResourceValue, smithoreResourceValue;
+    private Label foodPlantValue, energyPlantValue, smithorePlantValue;
+    private Label status;
     ShapeRenderer shapeRenderer;
     Player current_player;
 
@@ -44,9 +47,9 @@ public class GameScreen implements Screen {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         currentGameScreen = map.getMap();
-        whiteTexture = new Texture(Gdx.files.internal("textures/whiteTexture.jpg"));
-        background = new Texture(Gdx.files.internal("textures/Concrete_mapbg.jpg"));
-        skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
+        whiteTexture = new Texture(Gdx.files.internal("Anonymule/assets/textures/whiteTexture.jpg"));
+        background = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_mapbg.jpg"));
+        skin = new Skin(Gdx.files.internal("Anonymule/assets/skins/uiskin.json"));
         stage = new Stage();
 
         playerName = new Label("Player name: ", skin, "black");
@@ -57,10 +60,38 @@ public class GameScreen implements Screen {
         race.setPosition(100, 220);
         money = new Label("Money: ", skin, "black");
         money.setPosition(600, 220);
-
-
-
-//      System.out.println(current_player.getColor().toString());
+        inventory = new Label("Inventory ", skin, "black");
+        inventory.setPosition(100, 160);
+        plants = new Label("Plants ", skin, "black");
+        plants.setPosition(600, 160);
+        status = new Label("Status: Game started!", skin);
+        status.setColor(1,0,0,1);
+        status.setPosition(100, 20);
+        
+      //Put the Inventory right here:
+        foodResourceValue = new Label(("Food Resource x " + map.getCurrentPlayer().getFood()), skin);
+        foodResourceValue.setColor(0, 0, 1, 1);
+        foodResourceValue.setPosition(100,130);
+       
+        energyResourceValue = new Label(("Energy Resource x " + map.getCurrentPlayer().getEnergy()), skin);
+        energyResourceValue.setColor(0, 0, 1, 1);
+        energyResourceValue.setPosition(100,105);
+       
+        smithoreResourceValue = new Label(("Smithore Resource x " + map.getCurrentPlayer().getSmithore()), skin);
+        smithoreResourceValue.setColor(0, 0, 1, 1);
+        smithoreResourceValue.setPosition(100,80);
+        
+        foodPlantValue = new Label(("Food Plant x " + map.getCurrentPlayer().getFoodPlant()), skin);
+        foodPlantValue.setColor(0, 0, 1, 1);
+        foodPlantValue.setPosition(600,130);
+       
+        energyPlantValue = new Label(("Energy Plant x " + map.getCurrentPlayer().getEnergyPlant()), skin);
+        energyPlantValue.setColor(0, 0, 1, 1);
+        energyPlantValue.setPosition(600,105);
+        
+        smithorePlantValue = new Label(("Smithore Plant x " + map.getCurrentPlayer().getSmithorePlant()), skin);
+        smithorePlantValue.setColor(0, 0, 1, 1);
+        smithorePlantValue.setPosition(600,80);
 
         nameValue = new Label(map.getCurrentPlayer().getName(), skin);
         nameValue.setColor(map.getCurrentPlayer().getColor());
@@ -89,6 +120,15 @@ public class GameScreen implements Screen {
         stage.addActor(colorValue);
         stage.addActor(raceValue);
         stage.addActor(moneyValue);
+        stage.addActor(energyResourceValue);
+        stage.addActor(foodResourceValue);
+        stage.addActor(smithoreResourceValue);
+        stage.addActor(inventory);
+        stage.addActor(energyPlantValue);
+        stage.addActor(foodPlantValue);
+        stage.addActor(smithorePlantValue);
+        stage.addActor(plants);
+        stage.addActor(status);
         map.startGame();
     }
 
@@ -103,7 +143,14 @@ public class GameScreen implements Screen {
         moneyValue.setText(""+map.getCurrentPlayer().getMoney());
         raceValue.setText(""+map.getCurrentPlayer().getRace());
 
+        foodResourceValue.setText("Food Resource x " + map.getCurrentPlayer().getFood());
+        energyResourceValue.setText("Energy Resource x " + map.getCurrentPlayer().getEnergy());
+        smithoreResourceValue.setText("Smithore Resource x " + map.getCurrentPlayer().getSmithore());
 
+        foodPlantValue.setText("Food Plant x " + map.getCurrentPlayer().getFoodPlant());
+        energyPlantValue.setText("Energy Plant x " + map.getCurrentPlayer().getEnergyPlant());
+        smithorePlantValue.setText("Smithore Plant x " + map.getCurrentPlayer().getSmithorePlant());
+        status.setText("Status: " + map.getRandomEventsStatus());
         Gdx.gl.glClearColor(205f/255f, 201f/255f, 201f/255f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -147,7 +194,7 @@ public class GameScreen implements Screen {
                         shapeRenderer.rect(t.getX(), t.getY(), map.rectWidth, map.rectHeight);
                         if(t.isMule()){
                             shapeRenderer.setColor(t.getMuleColor());
-                            System.out.println(t.getMuleColor());
+                           // System.out.println(t.getMuleColor());
                             shapeRenderer.rect(t.getX(),t.getY(), 10, -10);
                         }
                     }

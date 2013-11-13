@@ -10,19 +10,10 @@ import com.cs2340.anonymule.Anonymule;
 public class MainMenuInputProcessor implements InputProcessor {
 
     Anonymule anonymule;
-    
-    /**
-     * Constructor sets up the anonymule
-     * @param anonymule The anonymule to use
-     */
 
     public MainMenuInputProcessor(Anonymule anonymule){
         this.anonymule = anonymule;
     }
-    
-    /**
-     * If escape is hit, exit application
-     */
 
     @Override
     public boolean keyDown(int keycode) {

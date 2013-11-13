@@ -11,10 +11,13 @@ import com.cs2340.anonymule.Anonymule;
 import com.cs2340.anonymule.Map;
 import com.cs2340.anonymule.Player;
 import com.cs2340.anonymule.Tile.Tile;
+import java.util.Random;
 
 
 public class GameInputProcessor implements InputProcessor {
 
+	Random random = new Random();
+	int randomEvents = random.nextInt(50) + 1;
 
     Map map;
     Player player;
@@ -35,6 +38,12 @@ public class GameInputProcessor implements InputProcessor {
      */
     @Override
     public boolean keyDown(int keycode) {
+        // Handle random Events after every keypress
+        map.determineLowest();
+        
+        System.out.println("Random number: " + randomEvents);
+
+        printInventory();
         if(keycode == Input.Keys.ESCAPE){
         	Json json = new Json();
         	FileHandle saveFile = Gdx.files.local("data/savefile.json");
@@ -46,6 +55,7 @@ public class GameInputProcessor implements InputProcessor {
         }
         //if space, then let player get the property
         if(keycode == Input.Keys.SPACE){
+            handleRandomEvents();
             switch (map.currentMode){
                 case InitialLandGrab:
                     if(map.getCurrentTile().getCanBuy()){
@@ -116,21 +126,25 @@ public class GameInputProcessor implements InputProcessor {
 
         if(keycode == Input.Keys.DPAD_UP){
         	if (player.getY()+10 <= 546) {
+                handleRandomEvents();
         		player.setY(player.getY()+10);
         	}
         }
         if(keycode == Input.Keys.DPAD_DOWN){
         	if (player.getY()-10 >= 297) {
+                handleRandomEvents();
         		player.setY(player.getY()-10);
         	}
         }
         if(keycode == Input.Keys.DPAD_LEFT){
         	if (player.getX()-10 >= 120) {
+                handleRandomEvents();
         		player.setX(player.getX()-10);
         	}
         }
         if(keycode == Input.Keys.DPAD_RIGHT){
         	if (player.getX()+10 <= 632) {
+                handleRandomEvents();
         		player.setX(player.getX()+10);
         	}
         }
@@ -140,58 +154,123 @@ public class GameInputProcessor implements InputProcessor {
          */
 
         if(keycode == Input.Keys.F){
-            int x = player.getX();
-            int y = player.getY();
+            int x = map.getCurrentPlayer().getX();
+            int y = map.getCurrentPlayer().getY();
 
-            for (Tile t: player.getPropertyList()){
+            for (Tile t: map.getCurrentPlayer().getPropertyList()){
                 if(x-t.getX() < 56 && t.getY()-y < 51){
-                    if(!t.isMule())
+                    if(!t.isMule()){
                         t.setMule(1);
+                        map.getCurrentPlayer().addFoodPlant();
+                        map.setRandomEventsStatus("You just planted a food mule!");
 
+                    }
                 }
 
             }
-            player.setMoney(player.getMoney()-5);
+            map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
         }
         if(keycode == Input.Keys.E){
-            int x = player.getX();
-            int y = player.getY();
+            int x = map.getCurrentPlayer().getX();
+            int y = map.getCurrentPlayer().getY();
 
-            for (Tile t: player.getPropertyList()){
-                if(t.getX()+x < t.getX()+56 && t.getY()-y > t.getY()-51){
-
-                    if(!t.isMule())
+            for (Tile t: map.getCurrentPlayer().getPropertyList()){
+                if(x-t.getX() < 56 && t.getY()-y < 51){
+                    if(!t.isMule()){
                         t.setMule(2);
+                        map.getCurrentPlayer().addEnergyPlant();
+                        map.setRandomEventsStatus("You just planted an energy mule");
 
+                    }
                 }
 
             }
-            player.setMoney(player.getMoney()-5);
+            map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
         }
-        /**
-         *  allow player to buy and install mule on the land
-         */
         if(keycode == Input.Keys.S){
-            int x = player.getX();
-            int y = player.getY();
+            int x = map.getCurrentPlayer().getX();
+            int y = map.getCurrentPlayer().getY();
 
-            for (Tile t: player.getPropertyList()){
-                if(t.getX()+x < t.getX()+56 && t.getY()-y > t.getY()-51){
-
-                    if(!t.isMule())
+            for (Tile t: map.getCurrentPlayer().getPropertyList()){
+                if(x-t.getX() < 56 && t.getY()-y < 51){
+                    if(!t.isMule()){
                         t.setMule(3);
+                        map.getCurrentPlayer().addSmithorePlant();
+                        map.setRandomEventsStatus("You just planted a smithore mule");
 
+                    }
                 }
 
             }
-            player.setMoney(player.getMoney()-5);
+            map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-5);
         }
 
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    /**
+     * Implemented for debugging purposes: prints the inventory onto the console
+     */
+    private void printInventory() {
+		// TODO Auto-generated method stub
+		System.out.println("Money: " + map.getCurrentPlayer().getMoney());
+		System.out.println("Energy: " + map.getCurrentPlayer().getEnergy());
+		System.out.println("Food: " + map.getCurrentPlayer().getFood());
+		System.out.println("Smithore: " + map.getCurrentPlayer().getSmithore());
 
-    @Override
+		System.out.println("Energy Plants: " + map.getCurrentPlayer().getEnergyPlant());
+		System.out.println("Food Plants: " + map.getCurrentPlayer().getFoodPlant());
+		System.out.println("Smithore Plants: " + map.getCurrentPlayer().getSmithorePlant());
+		System.out.println();
+	}
+
+	/**
+     *  Handles the random events that happen to a player
+     */
+    private void handleRandomEvents() {
+    	randomEvents = random.nextInt(50) + 1;
+
+		// TODO Auto-generated method stub
+    	if(randomEvents >= 1 && randomEvents <=5){
+			map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()+10);
+            map.setRandomEventsStatus("Random Event: Player finds $10!");
+
+		}
+    	else if(randomEvents >= 6 && randomEvents <=10 && 
+    			(!map.getCurrentPlayer().isLowest()) && 
+    			map.getCurrentPlayer().getMoney() > 0){
+			map.getCurrentPlayer().setMoney(map.getCurrentPlayer().getMoney()-10);
+            map.setRandomEventsStatus("Random Event: Player loses $10 :(");
+		}
+    	
+    	else if(randomEvents >= 19 && randomEvents <=22 && 
+    			(!map.getCurrentPlayer().isLowest()) && 
+    			map.getCurrentPlayer().getFood() > 0){
+			map.getCurrentPlayer().addFood(-1);
+            map.setRandomEventsStatus("Random Event: Player loses a food resource :(");
+    	}
+    	else if(randomEvents >= 23 && randomEvents <=25 && 
+    			(!map.getCurrentPlayer().isLowest()) && 
+			map.getCurrentPlayer().getSmithore() > 0){
+            map.setRandomEventsStatus("Random Event: Player loses a smithore resource :(");
+
+    	}
+    	else if(randomEvents >= 11 && randomEvents <=14){
+			map.getCurrentPlayer().addEnergy(1);
+            map.setRandomEventsStatus("Random Event: Player found an energy resource!!");
+
+		}
+    	else if(randomEvents >= 15 && randomEvents <=18){
+			map.getCurrentPlayer().addFood(1);
+			map.setRandomEventsStatus("Random Event: Player found a food resource!");
+    }
+    	else if(randomEvents >= 10 && randomEvents <=13){
+			map.getCurrentPlayer().addSmithore(1);
+			map.setRandomEventsStatus("Random Event: Player found a smithore resource!");
+
+    	}
+    }
+	@Override
     public boolean keyUp(int keycode) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }

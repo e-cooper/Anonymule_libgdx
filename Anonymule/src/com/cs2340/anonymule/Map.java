@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.Json.Serializable;
+import com.badlogic.gdx.utils.OrderedMap;
 import com.badlogic.gdx.utils.Timer;
 import com.cs2340.anonymule.Tile.*;
 
@@ -91,7 +94,6 @@ public class Map implements Serializable{
      * calculates who will be the next turn and what to do for said turn
      */
     public void nextTurn() {
-<<<<<<< HEAD
     	System.out.println("DEBUG: Next turn method from the map class called!");
     	calculateProduction();
     	

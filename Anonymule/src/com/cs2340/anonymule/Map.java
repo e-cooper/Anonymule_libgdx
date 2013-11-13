@@ -1,17 +1,16 @@
 package com.cs2340.anonymule;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Timer;
 import com.cs2340.anonymule.Tile.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import com.badlogic.gdx.InputProcessor;
+import java.util.Random;
 
 public class Map {
     private ArrayList<Player> playerList;
@@ -32,9 +31,12 @@ public class Map {
     private int j = 0;
     public boolean exitTimer = false;
     private Texture town;
+    private Texture store;
+    private int randomNumber;
+    private String randomEventsStatus = "";
+    Random randomGenerator = new Random();
 
-
-
+    
     public static enum GameMode {InitialLandGrab, Auction, Store, Pub, MuleLand, Town};
 
     public GameMode currentMode = GameMode.InitialLandGrab;
@@ -49,6 +51,7 @@ public class Map {
         if(map_type == 1){
             mainMap = new Texture(Gdx.files.internal("Anonymule/assets/textures/Map.jpg"));
             town = new Texture(Gdx.files.internal("Anonymule/assets/textures/town.jpg"));
+            store = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
             tileMap = new Tile[][]{
                     {new PlainsTile(120, 556), new PlainsTile(176, 556), new PlainsTile(231, 556), new MtnTile(287, 556), new RiverTile(343, 556), new MtnTile(399, 556), new PlainsTile(455, 556), new PlainsTile(511, 556), new MtnTile(567, 556)},
                     {new PlainsTile(120, 505), new MtnTile(170, 505), new PlainsTile(231, 505), new PlainsTile(287,505), new RiverTile(343, 505), new PlainsTile(399, 505), new PlainsTile(455, 505), new MtnTile(511, 505), new PlainsTile(567, 505)},
@@ -66,35 +69,71 @@ public class Map {
         nextTurn();
     }
 
+    /**
+     * calculates who will be the next turn and what to do for said turn
+     */
     public void nextTurn() {
+    	System.out.println("DEBUG: Next turn method from the map class called!");
+    	calculateProduction();
+    	
         if(turn <= (player_count)){  //if its the first few turns, initiate the land grab
             initLandGrab();
         }else{
             currentMode = GameMode.MuleLand;
+            map = mainMap;
             startRound();
         }
 
-        turn++;
-        if (player + 1 == getPlayerList().size()) {
+       // Put code in to raise resource
+        if (player == getPlayerList().size()-1) {
             player = 0;
         }
         else {
             player++;
         }
         currentPlayer = getPlayerList().get(player);
-
+        turn++;
     }
 
+    /**
+     * calculates the units of production for the next round
+     */
+    private void calculateProduction() {
+    	//Case if player has a food plant
+		if (currentPlayer.getFoodPlant() > 0 && currentPlayer.getEnergy() > 3){
+			int plants = currentPlayer.getFoodPlant();
+			currentPlayer.addFood(plants*3);
+			currentPlayer.addEnergy(-(plants*3));
+		}
+		
+		
+		//Case if player has an energy plant
+		if (currentPlayer.getEnergyPlant() > 0 && currentPlayer.getEnergy() > 3){
+			int plants = currentPlayer.getEnergyPlant();
+			currentPlayer.addEnergy(plants*3*2);
+			currentPlayer.addEnergy(-(plants*3));
+		}
+
+		//Case if player has a smithore plant
+		if (currentPlayer.getSmithorePlant() > 0 && currentPlayer.getEnergy() > 3){
+			int plants = currentPlayer.getSmithorePlant();
+			currentPlayer.addSmithore(plants*3);
+			currentPlayer.addEnergy(-(plants*3));
+		}
+
+	}
+
+	/**
+     * starts the main rounds with timers and stuff
+     */
     private void startRound(){
-        player = 0;
         Collections.sort(playerList, new CustomComparator());
         Timer.schedule(new Timer.Task(){
             public void run(){
-                currentPlayer = getPlayerList().get(player);
-                player++;
+                nextTurn();
             }
 
-        },1, 10, player_count-1);
+        },10, 10, player_count-1);
 
 
 
@@ -152,7 +191,6 @@ public class Map {
      * Sets the list of the players to this new list
      * @param playerList The new list of players
      */
-
     public void setPlayerList(ArrayList<Player> playerList) {
         this.playerList = playerList;
     }
@@ -213,7 +251,71 @@ public class Map {
         turn--;
         player--;
     }
-
+    
+    /**
+     * Determines who has the least money so bad random events don't affect that player
+     */
+    public void determineLowest(){
+    		if(playerList.size()  == 2){	//2 players
+    			if(playerList.get(0).getMoney() < playerList.get(1).getMoney()){
+    				playerList.get(0).setLowest(true);
+    				playerList.get(1).setLowest(false);
+    			}
+    		}	//ends 2 player case
+    		
+    		else if(playerList.size() == 3){
+    			if(playerList.get(0).getMoney() < playerList.get(1).getMoney() && playerList.get(0).getMoney() < playerList.get(2).getMoney()){
+    				playerList.get(0).setLowest(true);
+    				playerList.get(1).setLowest(false);
+    				playerList.get(2).setLowest(false);
+    			}
+    			else if(playerList.get(1).getMoney() < playerList.get(0).getMoney() && playerList.get(1).getMoney() < playerList.get(2).getMoney()){
+    				playerList.get(0).setLowest(false);
+    				playerList.get(1).setLowest(true);
+    				playerList.get(2).setLowest(false);
+    			}
+    			else if(playerList.get(2).getMoney() < playerList.get(0).getMoney() && playerList.get(2).getMoney() < playerList.get(1).getMoney()){
+    				playerList.get(0).setLowest(false);
+    				playerList.get(1).setLowest(false);
+    				playerList.get(2).setLowest(true);
+    			}
+    		} // ends 3 player case
+    		
+    		else if(playerList.size() == 4){
+    			if(playerList.get(0).getMoney() < playerList.get(1).getMoney() && playerList.get(0).getMoney() < playerList.get(2).getMoney()
+    				&& playerList.get(0).getMoney() < playerList.get(3).getMoney()){
+    				playerList.get(0).setLowest(true);
+    				playerList.get(1).setLowest(false);
+    				playerList.get(2).setLowest(false);
+    				playerList.get(3).setLowest(false);
+    			}
+    			else if(playerList.get(1).getMoney() < playerList.get(0).getMoney() && playerList.get(1).getMoney() < playerList.get(2).getMoney()
+        				&& playerList.get(1).getMoney() < playerList.get(3).getMoney()){
+        				playerList.get(0).setLowest(false);
+        				playerList.get(1).setLowest(true);
+        				playerList.get(2).setLowest(false);
+        				playerList.get(3).setLowest(false);
+        			}
+    			else if(playerList.get(2).getMoney() < playerList.get(1).getMoney() && playerList.get(2).getMoney() < playerList.get(0).getMoney()
+        				&& playerList.get(2).getMoney() < playerList.get(3).getMoney()){
+        				playerList.get(0).setLowest(false);
+        				playerList.get(1).setLowest(false);
+        				playerList.get(2).setLowest(true);
+        				playerList.get(3).setLowest(false);
+        			}
+    			else if(playerList.get(3).getMoney() < playerList.get(1).getMoney() && playerList.get(3).getMoney() < playerList.get(2).getMoney()
+        				&& playerList.get(3).getMoney() < playerList.get(0).getMoney()){
+        				playerList.get(0).setLowest(false);
+        				playerList.get(1).setLowest(false);
+        				playerList.get(2).setLowest(false);
+        				playerList.get(3).setLowest(true);
+        			}
+    		} //ends 4 player case
+    	}
+    
+    /**
+     * does basic logic to repeat a land grab for the players twice
+     */
     private void initLandGrab(){
         i = 0;
         j = 0;
@@ -242,10 +344,18 @@ public class Map {
         map = mainMap;
     }
 
+    /**
+     * clear timer and allocate player money
+     */
     public void gamble(){
         currentPlayer.setMoney(currentPlayer.getMoney()+100);
+        Timer.instance.clear();
+        nextTurn();
     }
 
+    /**
+     * simple compartor to see which player has more money
+     */
     private class CustomComparator implements Comparator<Player> {
         @Override
         public int compare(Player o1, Player o2) {
@@ -253,19 +363,22 @@ public class Map {
         }
     }
 
-	public void store() {
-		//TODO Need to Implement-Shafiq
+    /**
+     * change game state so player can enter store
+     */
+    public void enterStore() {
+        map = store;
+        currentMode = GameMode.Store;
+        Timer.instance.clear();
+    }
+
+	public String getRandomEventsStatus() {
+		return randomEventsStatus;
 	}
 
-	public void muleShop() {
-		// TODO Need to Implement-Shafiq
-		if (Gdx.input.isKeyPressed(Keys.B) && currentPlayer.getMoney() >= 90){
-			System.out.println("Player bought a mule!");
-	        currentPlayer.setMoney(currentPlayer.getMoney()-90);
-		}
-		if (Gdx.input.isKeyPressed(Keys.S)){
-			System.out.println("Player Sold a mule!");
-	        currentPlayer.setMoney(currentPlayer.getMoney()+90);
-		}
-	} //ends muleShop
-}//Ends class
+	public void setRandomEventsStatus(String randomEventsStatus) {
+		this.randomEventsStatus = randomEventsStatus;
+	}
+
+
+}

@@ -2,11 +2,12 @@ package com.cs2340.anonymule.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Base64Coder;
+import com.badlogic.gdx.utils.Json;
 import com.cs2340.anonymule.Anonymule;
 import com.cs2340.anonymule.Map;
 import com.cs2340.anonymule.Player;
@@ -29,7 +32,7 @@ public class MainMenuScreen implements Screen {
     private Integer[] players_count;
     private SelectBox difficultySelectBox;
     private SelectBox mapSelectBox;
-    private TextButton continueButton;
+    private TextButton continueButton, loadButton;
 
     //rendering
     private SpriteBatch batch;
@@ -56,11 +59,13 @@ public class MainMenuScreen implements Screen {
         stage = new Stage(480, 800, false);
 
         skin = new Skin(Gdx.files.internal("Anonymule/assets/skins/uiskin.json"));
-
+        
+        loadButton = new TextButton("Load Last Game", skin);
         continueButton = new TextButton("Continue", skin);
         background = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 480, 800);
+        loadButton.setPosition(400, 600);
         continueButton.setPosition(480 / 2 - 70, 800 / 2);
         mapTypeLabel = new Label("Map Type", skin);
         mapTypeLabel.setPosition(120, 605);
@@ -80,12 +85,21 @@ public class MainMenuScreen implements Screen {
 
         // Stage handles the inputs
         Gdx.input.setInputProcessor(stage);
+        
+        // Listen for clicks on the Load button        
+        loadButton.addListener(new InputListener() {
+        	public boolean touchDown(InputEvent even, float x, float y, int pointer, int button) {
+        		return true;
+        	}
+        	public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+        		load();
+        	}
+        });
 
         // Listen for clicks on the Continue button
         continueButton.addListener(new InputListener() {
 
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-//                System.out.println("down");
                 return true;
             }
 
@@ -96,6 +110,7 @@ public class MainMenuScreen implements Screen {
         });
 
         // Add all the actors(buttons, boxes, labels etc) to the stage
+        stage.addActor(loadButton);
         stage.addActor(continueButton);
         stage.addActor(difficultySelectBox);
         stage.addActor(mapSelectBox);
@@ -105,6 +120,18 @@ public class MainMenuScreen implements Screen {
         stage.addActor(playersLabel);
 
 
+    }
+    
+    public void load() {
+    	FileHandle loadFile = Gdx.files.local("data/savefile.json");
+    	Json json = new Json();
+    	if (loadFile.exists()) {
+    			String encodedFile = loadFile.readString();
+    			String decodedFile = Base64Coder.decodeString(encodedFile);
+    			Map map = json.fromJson( Map.class, decodedFile );
+    			anonymule.setMap(map);
+    			anonymule.setScreen(new GameScreen(anonymule));
+    	}
     }
 
     /**
@@ -161,6 +188,8 @@ public class MainMenuScreen implements Screen {
         batch.begin();
         batch.draw(background, 0, 0);
         batch.end();
+
+
 
         // Draw the stage with all its actors
         batch.begin();

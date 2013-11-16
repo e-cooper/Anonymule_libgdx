@@ -65,7 +65,7 @@ public class MainMenuScreen implements Screen {
         background = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 480, 800);
-        loadButton.setPosition(400, 600);
+        loadButton.setPosition(480/2 - 70, 100);
         continueButton.setPosition(480 / 2 - 70, 800 / 2);
         mapTypeLabel = new Label("Map Type", skin);
         mapTypeLabel.setPosition(120, 605);

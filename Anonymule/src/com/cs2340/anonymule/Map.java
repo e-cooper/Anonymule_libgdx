@@ -3,7 +3,6 @@ package com.cs2340.anonymule;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.Serializable;
 import com.badlogic.gdx.utils.OrderedMap;
@@ -40,7 +39,6 @@ public class Map implements Serializable{
     public boolean exitTimer = false;
     public static enum GameMode {InitialLandGrab, Auction, Store, Pub, MuleLand, Town};
     public GameMode currentMode = GameMode.InitialLandGrab;
-    private int randomNumber;
     private String randomEventsStatus = "";
     Random randomGenerator = new Random();
 
@@ -71,15 +69,32 @@ public class Map implements Serializable{
             mainMap = new Texture(Gdx.files.internal("Anonymule/assets/textures/Map.jpg"));
             town = new Texture(Gdx.files.internal("Anonymule/assets/textures/town.jpg"));
             store = new Texture(Gdx.files.internal("Anonymule/assets/textures/Concrete_splashbg.jpg"));
-            tileMap = new Tile[][]{
-                    {new PlainsTile(120, 556), new PlainsTile(176, 556), new PlainsTile(231, 556), new MtnTile(287, 556), new RiverTile(343, 556), new MtnTile(399, 556), new PlainsTile(455, 556), new PlainsTile(511, 556), new MtnTile(567, 556)},
-                    {new PlainsTile(120, 505), new MtnTile(170, 505), new PlainsTile(231, 505), new PlainsTile(287,505), new RiverTile(343, 505), new PlainsTile(399, 505), new PlainsTile(455, 505), new MtnTile(511, 505), new PlainsTile(567, 505)},
-                    {new PlainsTile(120, 454), new PlainsTile(170, 454), new PlainsTile(231, 454), new MtnTile(287,454), new TownTile(343, 454), new MtnTile(399, 454), new PlainsTile(455, 454), new PlainsTile(511, 454), new PlainsTile(567, 454)},
-                    {new MtnTile(120, 403), new PlainsTile(170, 403), new PlainsTile(231, 403), new PlainsTile(287,403), new RiverTile(343, 403), new PlainsTile(399, 403), new MtnTile(455, 403), new PlainsTile(511, 403), new PlainsTile(567, 403)},
-                    {new PlainsTile(120, 352),  new PlainsTile(170, 352), new MtnTile(231, 352), new PlainsTile(287,352), new RiverTile(343, 352), new PlainsTile(399, 352), new PlainsTile(455, 352), new MtnTile(511, 352), new PlainsTile(567, 352)}
-            };
         }
         map = mainMap;
+    }
+    
+    /**
+     * Constructor for testing
+     * @param playerList The player list
+     * @param difficulty The difficulty of the map
+     * @param map_type The map type
+     * @param texture The texture array
+     */
+    
+    public Map(ArrayList<Player> playerList, int difficulty, int map_type, Texture[] texture) {
+        this.playerList = playerList;
+        this.difficulty = difficulty;
+        this.map_type = map_type;
+        player = 0;
+        turn = 1;
+        currentPlayer = null;
+        
+        if (texture != null) {
+        	mainMap = texture[0];
+        	town = texture[1];
+        	store = texture[2];
+        	map = mainMap;
+        }
     }
     
     /**

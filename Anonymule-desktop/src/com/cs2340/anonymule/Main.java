@@ -2,6 +2,7 @@ package com.cs2340.anonymule;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
 import org.lwjgl.input.Keyboard;
 
 public class Main {

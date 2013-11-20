@@ -2,6 +2,8 @@ package com.cs2340.anonymule.Test;
 
 import java.util.ArrayList;
 
+import com.cs2340.anonymule.Tile.MtnTile;
+import com.cs2340.anonymule.Tile.Tile;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,14 +30,9 @@ public class Tests {
 	}
 
 	@Test
-	public void testPlayer() {
-		Assert.assertEquals(0, player.getEnergyPlant());
-	}
-	
-	@Test
 	public void testMap() {
-		System.out.println(map.getCurrentPlayer().getFood());
-		System.out.println(map.getCurrentPlayer().getEnergy());
+//		System.out.println(map.getCurrentPlayer().getFood());
+//		System.out.println(map.getCurrentPlayer().getEnergy());
 		map.getCurrentPlayer().addEnergy(10);
 		map.getCurrentPlayer().addFoodPlant();
 		map.startGame();
@@ -45,5 +42,37 @@ public class Tests {
 		Assert.assertEquals(7, map.getCurrentPlayer().getEnergy());		
 		Assert.assertEquals(3, map.getCurrentPlayer().getFood());
 	}
+
+    @Test
+    public void testBuyTile() {
+        map.getCurrentTile().buyTile(map.getCurrentPlayer());
+        map.nextTurn();
+        Assert.assertFalse(map.getCurrentTile().buyTile(map.getCurrentPlayer()));
+    }
+
+    @Test
+    public void testTurns() {
+
+        for(int i = 0; i < 97; i++){
+            map.addPlayer(new Player());
+        }
+
+        //100 players
+        for(int i = 0; i < 100; i++){
+            map.nextTurn();
+        }
+
+        Assert.assertEquals(map.getCurrentPlayer(), map.getPlayerList().get(0));
+    }
+
+    @Test
+    public void testDetermineLowest() {
+        ArrayList<Player> players = map.getPlayerList();
+        players.get(0).setMoney(200);
+        players.get(1).setMoney(199);
+        players.get(2).setMoney(201);
+        map.determineLowest();
+        Assert.assertTrue(players.get(1).isLowest());
+    }
 
 }

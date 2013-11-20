@@ -109,7 +109,7 @@ public class Map implements Serializable{
      * calculates who will be the next turn and what to do for said turn
      */
     public void nextTurn() {
-    	System.out.println("DEBUG: Next turn method from the map class called!");
+//    	System.out.println("DEBUG: Next turn method from the map class called!");
     	calculateProduction();
     	
         if(turn <= (player_count*2)){  //if its the first few turns, initiate the land grab

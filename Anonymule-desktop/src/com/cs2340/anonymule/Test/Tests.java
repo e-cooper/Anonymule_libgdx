@@ -108,26 +108,102 @@ public class Tests {
 	@Test
 	public void testTurns() {
 
-		for(int i = 0; i < 97; i++){
-			map.addPlayer(new Player());
-		}
+		for(int i = 0; i < 7; i++){
+            map.addPlayer(new Player());
+        }
+		
+        //check if game modes are changed correctly
+        //10 players
+        for(int i = 0; i <  map.getPlayerList().size(); i++){
+            Assert.assertEquals(Map.GameMode.InitialLandGrab, map.currentMode);
+            map.nextTurn();
+        }
+        
+        //check to see if we looped back to first player
+        Assert.assertEquals(map.getCurrentPlayer(), map.getPlayerList().get(0));
 
-		//100 players
-		for(int i = 0; i < 100; i++){
-			map.nextTurn();
-		}
-
-		Assert.assertEquals(map.getCurrentPlayer(), map.getPlayerList().get(0));
+        //check to see if the game mode is changing to the new one once land grab is finished
+        for(int i = 0; i <= map.getPlayerList().size(); i++){
+            map.nextTurn();
+        }
+        
+        Assert.assertEquals(Map.GameMode.MuleLand, map.currentMode);
 	}
+	
+	/**
+	 * Makes sure the correct player is found to have the lowest money amount
+	 */
 
 	@Test
 	public void testDetermineLowest() {
 		ArrayList<Player> players = map.getPlayerList();
-		players.get(0).setMoney(200);
-		players.get(1).setMoney(199);
-		players.get(2).setMoney(201);
-		map.determineLowest();
-		Assert.assertTrue(players.get(1).isLowest());
+        players.get(0).setMoney(200);
+        players.get(1).setMoney(199);
+        map.determineLowest();
+        Assert.assertFalse(players.get(0).isLowest());
+        Assert.assertTrue(players.get(1).isLowest());
+
+        //3 players
+        players.get(0).setMoney(199);
+        players.get(1).setMoney(200);
+        map.determineLowest();
+        Assert.assertTrue(players.get(0).isLowest());
+        Assert.assertFalse(players.get(1).isLowest());
+
+        players.get(2).setMoney(201);
+        map.determineLowest();
+        Assert.assertTrue(players.get(0).isLowest());
+
+        players.get(0).setMoney(250);
+        players.get(1).setMoney(199);
+        players.get(2).setMoney(201);
+        map.determineLowest();
+        Assert.assertFalse(players.get(0).isLowest());
+        Assert.assertTrue(players.get(1).isLowest());
+        Assert.assertFalse(players.get(2).isLowest());
+
+        //4 players
+        map.addPlayer(new Player());
+
+        players.get(0).setMoney(199);
+        players.get(1).setMoney(200);
+        players.get(2).setMoney(201);
+        players.get(3).setMoney(202);
+        map.determineLowest();
+        Assert.assertTrue(players.get(0).isLowest());
+        Assert.assertFalse(players.get(1).isLowest());
+        Assert.assertFalse(players.get(2).isLowest());
+        Assert.assertFalse(players.get(3).isLowest());
+
+        players.get(0).setMoney(199);
+        players.get(1).setMoney(198);
+        players.get(2).setMoney(201);
+        players.get(3).setMoney(202);
+        map.determineLowest();
+        Assert.assertFalse(players.get(0).isLowest());
+        Assert.assertTrue(players.get(1).isLowest());
+        Assert.assertFalse(players.get(2).isLowest());
+        Assert.assertFalse(players.get(3).isLowest());
+
+        players.get(0).setMoney(199);
+        players.get(1).setMoney(200);
+        players.get(2).setMoney(198);
+        players.get(3).setMoney(202);
+        map.determineLowest();
+        Assert.assertFalse(players.get(0).isLowest());
+        Assert.assertFalse(players.get(1).isLowest());
+        Assert.assertTrue(players.get(2).isLowest());
+        Assert.assertFalse(players.get(3).isLowest());
+
+        players.get(0).setMoney(199);
+        players.get(1).setMoney(200);
+        players.get(2).setMoney(201);
+        players.get(3).setMoney(198);
+        map.determineLowest();
+        Assert.assertFalse(players.get(0).isLowest());
+        Assert.assertFalse(players.get(1).isLowest());
+        Assert.assertFalse(players.get(2).isLowest());
+        Assert.assertTrue(players.get(3).isLowest());
 	}
  
 }
